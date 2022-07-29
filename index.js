@@ -44,6 +44,8 @@ const { chromium } = require("playwright");
     (buttons) => buttons.length
   );
 
+  console.info("buttonCount", buttonCount);
+
   for (let i = 1; i <= buttonCount; i++) {
     const trSelector = `section#registration-table.accounts table#account-table tr:nth-child(${i})`;
     if (await page.$$eval(`${trSelector} ${buttonSelector}`, (l) => l.length)) {
@@ -56,11 +58,14 @@ const { chromium } = require("playwright");
         }
       }, `${trSelector} td:first-child`);
 
+      console.info("account", account);
+
       if (SKIP_LIST.includes(account)) {
+        console.info("skip", account);
         continue;
       }
 
-      console.info(account);
+      console.info("click", account);
       await page.click(`${trSelector} ${buttonSelector}`);
     }
   }
