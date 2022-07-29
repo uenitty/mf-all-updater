@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "node index.js"
+    "update": "node index.js"
   },
   "devDependencies": {
     "prettier": "2.7.1"
