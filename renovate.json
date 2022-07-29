@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "config:base",
+    ":automergeAll",
+    ":label(renovate)",
+    ":maintainLockFilesWeekly",
+    ":timezone(Asia/Tokyo)"
+  ],
+  "postUpdateOptions": ["yarnDedupeHighest"],
+  "schedule": ["after 10pm every weekend", "before 5am every weekend"]
+}
