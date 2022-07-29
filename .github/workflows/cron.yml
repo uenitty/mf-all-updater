@@ -19,5 +19,5 @@ jobs:
           node-version-file: ".node-version"
           cache: "yarn"
       - run: yarn install --check-files --frozen-lockfile --non-interactive
-      - run: bash command.sh
+      - run: bash -l command.sh
       - run: cat log.txt
