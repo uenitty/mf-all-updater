@@ -1,0 +1,17 @@
+{
+  "name": "moneyforward",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "node index.js"
+  },
+  "devDependencies": {
+    "prettier": "2.7.1"
+  },
+  "dependencies": {
+    "dotenv": "16.0.1",
+    "playwright": "1.24.1"
+  }
+}
