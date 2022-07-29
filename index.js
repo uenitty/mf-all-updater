@@ -13,6 +13,7 @@ const { chromium } = require("playwright");
     process.exit(1);
   }
 
+  console.debug("launch browser");
   const browser = await chromium.launch({ headless: true });
 
   const context = await browser.newContext({
@@ -22,53 +23,64 @@ const { chromium } = require("playwright");
   });
 
   const page = await context.newPage();
+
+  console.debug("goto /");
   await page.goto("/");
 
-  await page.click('a[href="/sign_in"]');
+  console.debug("click ログイン");
   await page
-    .locator(':nth-match(:text("メールアドレスでログイン"), 1)')
+    .locator('a[href="/sign_in"]', {
+      hasText: "ログイン",
+    })
     .click();
 
-  await page.fill('input[type="email"]', EMAIL);
-  await page.click('input[type="submit"]');
-  await page.waitForTimeout(500);
-  await page.fill('input[type="password"]', PASSWORD);
-  await page.click('input[type="submit"]');
+  console.debug("click メールアドレスでログイン");
+  await page
+    .locator('a[href^="/sign_in/email"]', {
+      hasText: "メールアドレスでログイン",
+    })
+    .click();
 
+  console.debug("fill EMAIL");
+  await page.locator('input[type="email"]').fill(EMAIL);
+  console.debug("click EMAIL submit");
+  await Promise.all([
+    page.waitForNavigation(),
+    page.locator('input[type="submit"]').click(),
+  ]);
+  console.debug("fill PASSWORD");
+  await page.locator('input[type="password"]').fill(PASSWORD);
+  console.debug("click PASSWORD submit");
+  await page.locator('input[type="submit"]').click();
+
+  console.debug("goto /accounts");
   await page.goto("/accounts");
 
-  const buttonSelector =
-    'input:not(disabled)[type="submit"][name="commit"][value="更新"]';
-  const buttonCount = await page.$$eval(
-    buttonSelector,
-    (buttons) => buttons.length
-  );
+  const rows = page
+    .locator("section#registration-table.accounts table#account-table tr")
+    .filter({
+      has: page.locator('form input[value="更新"]'),
+    });
 
-  console.info("buttonCount", buttonCount);
+  const count = await rows.count();
+  console.debug("count", count);
 
-  for (let i = 1; i <= buttonCount; i++) {
-    const trSelector = `section#registration-table.accounts table#account-table tr:nth-child(${i})`;
-    if (await page.$$eval(`${trSelector} ${buttonSelector}`, (l) => l.length)) {
-      const account = await page.evaluate((sel) => {
-        const element = document.querySelector(sel);
-        if (element) {
-          return element.textContent
-            .replace(/\([\s\S]*/, "")
-            .replace(/[\n\r]*/g, "");
-        }
-      }, `${trSelector} td:first-child`);
+  for (let i = 0; i < count; i++) {
+    const row = rows.nth(i);
 
-      console.info("account", account);
+    const accountName = await row
+      .locator("td:first-child a:first-child")
+      .textContent();
 
-      if (SKIP_LIST.includes(account)) {
-        console.info("skip", account);
-        continue;
-      }
-
-      console.info("click", account);
-      await page.click(`${trSelector} ${buttonSelector}`);
+    if (SKIP_LIST.includes(accountName)) {
+      console.info(i, "skip", accountName);
+      continue;
     }
+
+    console.info(i, "update", accountName);
+    await row.locator('form input[value="更新"]').click();
   }
 
+  console.debug("close browser");
   await browser.close();
 })();
