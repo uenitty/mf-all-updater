@@ -10,7 +10,7 @@ env:
   PASSWORD: ${{ secrets.PASSWORD }}
 
 jobs:
-  cron:
+  update:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3.0.2
@@ -19,5 +19,4 @@ jobs:
           node-version-file: ".node-version"
           cache: "yarn"
       - run: yarn install --check-files --frozen-lockfile --non-interactive
-      - run: bash -l command.sh
-      - run: cat log.txt
+      - run: yarn update
