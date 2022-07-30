@@ -3,11 +3,11 @@
 require("dotenv").config();
 const { chromium } = require("playwright");
 
-(async () => {
-  const EMAIL = process.env.EMAIL || "";
-  const PASSWORD = process.env.PASSWORD || "";
-  const SKIP_LIST = ["Amazon.co.jp"];
+const EMAIL = process.env.EMAIL || "";
+const PASSWORD = process.env.PASSWORD || "";
+const SKIP_LIST = ["Amazon.co.jp"];
 
+(async () => {
   if (!EMAIL || !PASSWORD) {
     console.error("Please set EMAIL and PASSWORD environment variables.");
     process.exit(1);
@@ -51,7 +51,10 @@ const { chromium } = require("playwright");
   console.debug("fill PASSWORD");
   await page.locator('input[type="password"]').fill(PASSWORD);
   console.debug("click PASSWORD submit");
-  await page.locator('input[type="submit"]').click();
+  await Promise.all([
+    page.waitForNavigation(),
+    page.locator('input[type="submit"]').click(),
+  ]);
 
   console.debug("goto /accounts");
   await page.goto("/accounts");
@@ -78,7 +81,14 @@ const { chromium } = require("playwright");
     }
 
     console.info(i, "update", accountName);
-    await row.locator('form input[value="更新"]').click();
+    const form = row.locator("form", {
+      has: page.locator('input[value="更新"]'),
+    });
+    const action = await form.getAttribute("action");
+    await Promise.all([
+      page.waitForResponse(action),
+      form.locator('input[value="更新"]').click(),
+    ]);
   }
 
   console.debug("close browser");
