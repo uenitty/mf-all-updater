@@ -92,5 +92,6 @@ const SKIP_LIST = ["Amazon.co.jp"];
   }
 
   console.debug("close browser");
+  await context.close();
   await browser.close();
 })();
