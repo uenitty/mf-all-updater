@@ -1,6 +1,7 @@
 name: cron
 
 on:
+  repository_dispatch:
   schedule:
     - cron: "30 3-23/6 * * *"
   workflow_dispatch:
