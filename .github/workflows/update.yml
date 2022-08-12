@@ -1,4 +1,4 @@
-name: cron
+name: update
 
 on:
   repository_dispatch:
