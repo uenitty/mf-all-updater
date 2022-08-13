@@ -1,6 +1,9 @@
-name: cron
+name: update
 
 on:
+  push:
+    branches:
+      - "renovate/**"
   repository_dispatch:
   schedule:
     - cron: "30 0,3,9,15 * * *"
