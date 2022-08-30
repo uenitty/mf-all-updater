@@ -5,7 +5,7 @@ const { chromium } = require("playwright");
 
 const EMAIL = process.env.EMAIL || "";
 const PASSWORD = process.env.PASSWORD || "";
-const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
+const SKIP_LIST = process.env.SKIP_LIST ? process.env.SKIP_LIST.split(",") : [];
 
 (async () => {
   if (!EMAIL || !PASSWORD) {
