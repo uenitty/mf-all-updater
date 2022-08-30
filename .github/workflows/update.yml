@@ -12,6 +12,7 @@ on:
 env:
   EMAIL: ${{ secrets.EMAIL }}
   PASSWORD: ${{ secrets.PASSWORD }}
+  SKIP_LIST: ${{ secrets.SKIP_LIST }}
 
 jobs:
   update:
