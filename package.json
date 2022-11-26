@@ -8,7 +8,7 @@
     "update": "node index.js"
   },
   "devDependencies": {
-    "prettier": "2.7.1"
+    "prettier": "2.8.0"
   },
   "dependencies": {
     "dotenv": "16.0.3",
