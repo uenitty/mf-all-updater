@@ -12,6 +12,6 @@
   },
   "dependencies": {
     "dotenv": "16.0.3",
-    "playwright": "1.32.2"
+    "playwright": "1.32.3"
   }
 }
