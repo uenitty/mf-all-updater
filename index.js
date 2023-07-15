@@ -14,7 +14,7 @@ const SKIP_LIST = process.env.SKIP_LIST ? process.env.SKIP_LIST.split(",") : [];
   }
 
   console.debug("launch browser");
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: false });
 
   const context = await browser.newContext({
     baseURL: "https://moneyforward.com",
@@ -46,14 +46,14 @@ const SKIP_LIST = process.env.SKIP_LIST ? process.env.SKIP_LIST.split(",") : [];
   console.debug("click EMAIL submit");
   await Promise.all([
     page.waitForNavigation(),
-    page.locator('input[type="submit"]').click(),
+    page.locator('input[type="email"]').press("Enter"),
   ]);
   console.debug("fill PASSWORD");
   await page.locator('input[type="password"]').fill(PASSWORD);
   console.debug("click PASSWORD submit");
   await Promise.all([
     page.waitForNavigation(),
-    page.locator('input[type="submit"]').click(),
+    page.locator('input[type="password"]').press("Enter"),
   ]);
 
   console.debug("goto /accounts");
