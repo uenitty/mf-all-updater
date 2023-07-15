@@ -1,9 +1,9 @@
 name: update
 
 on:
-  push:
+  pull_request:
     branches:
-      - "renovate/**"
+      - main
   repository_dispatch:
   schedule:
     - cron: "0 */3 * * *"
