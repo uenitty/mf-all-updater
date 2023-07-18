@@ -1,11 +1,14 @@
 {
   "extends": [
     "config:recommended",
+    "helpers:pinGitHubActionDigests",
     ":automergeAll",
     ":label(renovate)",
     ":maintainLockFilesWeekly",
+    ":pinAllExceptPeerDependencies",
     ":timezone(Asia/Tokyo)"
   ],
+  "configMigration": true,
   "postUpdateOptions": ["yarnDedupeHighest"],
   "schedule": ["after 10pm every weekend", "before 5am every weekend"]
 }
