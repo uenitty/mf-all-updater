@@ -43,14 +43,14 @@ const SKIP_LIST = process.env.SKIP_LIST ? process.env.SKIP_LIST.split(",") : [];
 
   console.debug("fill EMAIL");
   await page.locator('input[type="email"]').fill(EMAIL);
-  console.debug("click EMAIL submit");
+  console.debug("submit EMAIL");
   await Promise.all([
     page.waitForNavigation(),
     page.locator('input[type="email"]').press("Enter"),
   ]);
   console.debug("fill PASSWORD");
   await page.locator('input[type="password"]').fill(PASSWORD);
-  console.debug("click PASSWORD submit");
+  console.debug("submit PASSWORD");
   await Promise.all([
     page.waitForNavigation(),
     page.locator('input[type="password"]').press("Enter"),
