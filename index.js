@@ -5,12 +5,13 @@ const { chromium } = require("playwright");
 
 const EMAIL = process.env.EMAIL || "";
 const PASSWORD = process.env.PASSWORD || "";
-const SKIP_LIST = process.env.SKIP_LIST ? process.env.SKIP_LIST.split(",") : [];
+const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
 
 (async () => {
   if (!EMAIL || !PASSWORD) {
     console.error("Please set EMAIL and PASSWORD environment variables.");
-    process.exit(1);
+    process.exitCode = 1;
+    return;
   }
 
   console.debug("launch browser");
