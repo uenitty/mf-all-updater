@@ -24,15 +24,15 @@ const SKIP_LIST = process.env.SKIP_LIST ? process.env.SKIP_LIST.split(",") : [];
 
   const page = await context.newPage();
 
-  console.debug("goto /");
-  await page.goto("/");
+  console.debug("goto /accounts");
+  await page.goto("/accounts");
 
   const loginLink = page.locator('a[href="/sign_in"]', {
     hasText: "ログイン",
   });
   if (await loginLink.count()) {
     console.debug("click ログイン");
-    await loginLink.click();
+    await Promise.all([page.waitForURL(/\/sign_in/), loginLink.click()]);
   }
 
   const loginWithEmailLink = page.locator('a[href^="/sign_in/email"]', {
@@ -40,22 +40,22 @@ const SKIP_LIST = process.env.SKIP_LIST ? process.env.SKIP_LIST.split(",") : [];
   });
   if (await loginWithEmailLink.count()) {
     console.debug("click メールアドレスでログイン");
-    await loginWithEmailLink.click();
+    await Promise.all([
+      page.waitForURL(/\/sign_in/),
+      loginWithEmailLink.click(),
+    ]);
   }
 
+  const inputEmail = page.locator('input[type="email"]');
+  const inputPassword = page.locator('input[type="password"]');
   console.debug("fill EMAIL");
-  await page.locator('input[type="email"]').fill(EMAIL);
-  console.debug("submit EMAIL");
-  await Promise.all([
-    page.waitForURL(/\/sign_in/),
-    page.locator('input[type="email"]').press("Enter"),
-  ]);
+  await inputEmail.fill(EMAIL);
   console.debug("fill PASSWORD");
-  await page.locator('input[type="password"]').fill(PASSWORD);
-  console.debug("submit PASSWORD");
+  await inputPassword.fill(PASSWORD);
+  console.debug("submit EMAIL and PASSWORD");
   await Promise.all([
     page.waitForURL(/\/sign_in/),
-    page.locator('input[type="password"]').press("Enter"),
+    inputPassword.press("Enter"),
   ]);
 
   console.debug("goto /accounts");
