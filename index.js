@@ -58,10 +58,8 @@ const SKIP_LIST = process.env.SKIP_LIST ? process.env.SKIP_LIST.split(",") : [];
     inputPassword.press("Enter"),
   ]);
 
-  if (!page.url().match(/\/accounts/)) {
-    console.debug("goto /accounts", { "page.url()": page.url() });
-    await page.goto("/accounts");
-  }
+  console.debug("goto /accounts");
+  await page.goto("/accounts");
 
   const useThisAccountButton = page.locator("button", {
     hasText: "このアカウントを使用する",
