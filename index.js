@@ -47,17 +47,22 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
     ]);
   }
 
-  const inputEmail = page.locator('input[type="email"]');
-  const inputPassword = page.locator('input[type="password"]');
-  console.debug("fill EMAIL");
-  await inputEmail.fill(EMAIL);
-  console.debug("fill PASSWORD");
-  await inputPassword.fill(PASSWORD);
-  console.debug("submit EMAIL and PASSWORD");
-  await Promise.all([
-    page.waitForURL(/\/sign_in/),
-    inputPassword.press("Enter"),
-  ]);
+  try {
+    const inputEmail = page.locator('input[type="email"]');
+    const inputPassword = page.locator('input[type="password"]');
+    console.debug("fill EMAIL");
+    await inputEmail.fill(EMAIL);
+    console.debug("fill PASSWORD");
+    await inputPassword.fill(PASSWORD);
+    console.debug("submit EMAIL and PASSWORD");
+    await Promise.all([
+      page.waitForURL(/\/sign_in/),
+      inputPassword.press("Enter"),
+    ]);
+  } catch (error) {
+    console.error("page.content()\n-----\n", await page.content(), "\n-----");
+    throw error;
+  }
 
   console.debug("goto /accounts");
   await page.goto("/accounts");
@@ -82,27 +87,32 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
   const count = await rows.count();
   console.debug("count", count);
 
-  for (let i = 0; i < count; i++) {
-    const row = rows.nth(i);
+  try {
+    for (let i = 0; i < count; i++) {
+      const row = rows.nth(i);
 
-    const accountName = await row
-      .locator("td:first-child a:first-child")
-      .textContent();
+      const accountName = await row
+        .locator("td:first-child a:first-child")
+        .textContent();
 
-    if (SKIP_LIST.includes(accountName)) {
-      console.info(i, "skip", accountName);
-      continue;
+      if (SKIP_LIST.includes(accountName)) {
+        console.info(i, "skip", accountName);
+        continue;
+      }
+
+      console.info(i, "update", accountName);
+      const form = row.locator("form", {
+        has: page.locator('input[value="更新"]'),
+      });
+      const action = await form.getAttribute("action");
+      await Promise.all([
+        page.waitForResponse(action),
+        form.locator('input[value="更新"]').click(),
+      ]);
     }
-
-    console.info(i, "update", accountName);
-    const form = row.locator("form", {
-      has: page.locator('input[value="更新"]'),
-    });
-    const action = await form.getAttribute("action");
-    await Promise.all([
-      page.waitForResponse(action),
-      form.locator('input[value="更新"]').click(),
-    ]);
+  } catch (error) {
+    console.error("page.content()\n-----\n", await page.content(), "\n-----");
+    throw error;
   }
 
   console.debug("close browser");
