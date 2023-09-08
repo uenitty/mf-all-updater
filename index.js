@@ -48,16 +48,16 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
   }
 
   try {
-    const inputEmail = page.locator('input[type="email"]');
-    const inputPassword = page.locator('input[type="password"]');
+    const emailInput = page.locator('input[type="email"]');
+    const passwordInput = page.locator('input[type="password"]');
     console.debug("fill EMAIL");
-    await inputEmail.fill(EMAIL);
+    await emailInput.fill(EMAIL);
     console.debug("fill PASSWORD");
-    await inputPassword.fill(PASSWORD);
+    await passwordInput.fill(PASSWORD);
     console.debug("submit EMAIL and PASSWORD");
     await Promise.all([
       page.waitForURL(/\/sign_in/),
-      inputPassword.press("Enter"),
+      passwordInput.press("Enter"),
     ]);
   } catch (error) {
     console.error("page.content()\n-----\n", await page.content(), "\n-----");
