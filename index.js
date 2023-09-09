@@ -87,8 +87,8 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
   const count = await rows.count();
   console.debug("count", count);
 
-  try {
-    for (let i = 0; i < count; i++) {
+  for (let i = 0; i < count; i++) {
+    try {
       const row = rows.nth(i);
 
       const accountName = await row
@@ -109,10 +109,13 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
         page.waitForResponse(action),
         form.locator('input[value="更新"]').click(),
       ]);
+    } catch (error) {
+      console.error(`caught error at ${i}th row`);
+      console.error("::group::page.content()");
+      console.error(await page.content());
+      console.error("::endgroup::");
+      throw error;
     }
-  } catch (error) {
-    console.error("page.content()\n-----\n", await page.content(), "\n-----");
-    throw error;
   }
 
   console.debug("close browser");
