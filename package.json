@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "update": "node -r esbuild-register index.ts"
+    "update_account": "node -r esbuild-register index.ts"
   },
   "devDependencies": {
     "@types/node": "20.12.11",
