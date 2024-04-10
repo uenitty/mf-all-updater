@@ -96,33 +96,30 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
       has: page.getByRole("button", { name: "更新" }),
     });
 
-  const count = await rows.count();
-  console.debug("count", count);
+  const accountNames = await Promise.all(
+    (await rows.locator("td:first-child a:first-child").all()).map(
+      (firstChild) => firstChild.textContent(),
+    ),
+  );
+  console.debug("accountNames", accountNames);
 
-  for (let i = 0; i < count; i++) {
+  for (let accountName of accountNames) {
     try {
-      const row = rows.nth(i);
-
-      const accountName = await row
-        .locator("td:first-child a:first-child")
-        .textContent();
-
       if (SKIP_LIST.includes(accountName)) {
-        console.info(i, "skip", accountName);
+        console.info("skip", accountName);
         continue;
       }
 
-      console.info(i, "update", accountName);
-      const form = row.locator("form", {
+      console.info("update", accountName);
+      const form = rows.filter({ hasText: accountName }).locator("form", {
         has: page.getByRole("button", { name: "更新" }),
       });
+      const updateButton = form.getByRole("button", { name: "更新" });
+      await updateButton.waitFor();
       const action = await form.getAttribute("action");
-      await Promise.all([
-        page.waitForResponse(action),
-        form.getByRole("button", { name: "更新" }).click(),
-      ]);
+      await Promise.all([page.waitForResponse(action), updateButton.click()]);
     } catch (error) {
-      console.error(`caught error at ${i}th row`);
+      console.error(`caught error at ${accountName} row`);
       console.error(error);
       console.error("::group::page.content()");
       console.error(await page.content());
