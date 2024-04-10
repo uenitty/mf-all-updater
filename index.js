@@ -68,8 +68,8 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
   console.debug("goto /accounts");
   await page.goto("/accounts");
 
-  const useThisAccountButton = page.locator("button", {
-    hasText: "このアカウントを使用する",
+  const useThisAccountButton = page.getByRole("button", {
+    name: "このアカウントを使用する",
   });
   if (await useThisAccountButton.count()) {
     console.debug("click このアカウントを使用する");
@@ -82,7 +82,7 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
   const rows = page
     .locator("section#registration-table.accounts table#account-table tr")
     .filter({
-      has: page.locator('form input[value="更新"]'),
+      has: page.getByRole("button", { name: "更新" }),
     });
 
   const count = await rows.count();
@@ -103,12 +103,12 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
 
       console.info(i, "update", accountName);
       const form = row.locator("form", {
-        has: page.locator('input[value="更新"]'),
+        has: page.getByRole("button", { name: "更新" }),
       });
       const action = await form.getAttribute("action");
       await Promise.all([
         page.waitForResponse(action),
-        form.locator('input[value="更新"]').click(),
+        form.getByRole("button", { name: "更新" }).click(),
       ]);
     } catch (error) {
       console.error(`caught error at ${i}th row`);
