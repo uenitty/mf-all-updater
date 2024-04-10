@@ -60,6 +60,7 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
       passwordInput.press("Enter"),
     ]);
   } catch (error) {
+    console.error(error);
     console.error("page.content()\n-----\n", await page.content(), "\n-----");
     throw error;
   }
@@ -111,6 +112,7 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
       ]);
     } catch (error) {
       console.error(`caught error at ${i}th row`);
+      console.error(error);
       console.error("::group::page.content()");
       console.error(await page.content());
       console.error("::endgroup::");
