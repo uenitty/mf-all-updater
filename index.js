@@ -60,6 +60,7 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
       passwordInput.press("Enter"),
     ]);
   } catch (error) {
+    console.error(error);
     console.error("page.content()\n-----\n", await page.content(), "\n-----");
     throw error;
   }
@@ -67,8 +68,8 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
   console.debug("goto /accounts");
   await page.goto("/accounts");
 
-  const useThisAccountButton = page.locator("button", {
-    hasText: "このアカウントを使用する",
+  const useThisAccountButton = page.getByRole("button", {
+    name: "このアカウントを使用する",
   });
   if (await useThisAccountButton.count()) {
     console.debug("click このアカウントを使用する");
@@ -78,39 +79,48 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
     ]);
   }
 
+  const selectThisAccountButton = page.getByRole("button", {
+    name: "メールアドレスでログイン",
+  });
+  if (await selectThisAccountButton.count()) {
+    console.debug("click メールアドレスでログイン");
+    await Promise.all([
+      page.waitForURL(/\/accounts/),
+      selectThisAccountButton.click(),
+    ]);
+  }
+
   const rows = page
     .locator("section#registration-table.accounts table#account-table tr")
     .filter({
-      has: page.locator('form input[value="更新"]'),
+      has: page.getByRole("button", { name: "更新" }),
     });
 
-  const count = await rows.count();
-  console.debug("count", count);
+  const accountNames = await Promise.all(
+    (await rows.locator("td:first-child a:first-child").all()).map(
+      (firstChild) => firstChild.textContent(),
+    ),
+  );
+  console.debug("accountNames", accountNames);
 
-  for (let i = 0; i < count; i++) {
+  for (let accountName of accountNames) {
     try {
-      const row = rows.nth(i);
-
-      const accountName = await row
-        .locator("td:first-child a:first-child")
-        .textContent();
-
       if (SKIP_LIST.includes(accountName)) {
-        console.info(i, "skip", accountName);
+        console.info("skip", accountName);
         continue;
       }
 
-      console.info(i, "update", accountName);
-      const form = row.locator("form", {
-        has: page.locator('input[value="更新"]'),
+      console.info("update", accountName);
+      const form = rows.filter({ hasText: accountName }).locator("form", {
+        has: page.getByRole("button", { name: "更新" }),
       });
+      const updateButton = form.getByRole("button", { name: "更新" });
+      await updateButton.waitFor();
       const action = await form.getAttribute("action");
-      await Promise.all([
-        page.waitForResponse(action),
-        form.locator('input[value="更新"]').click(),
-      ]);
+      await Promise.all([page.waitForResponse(action), updateButton.click()]);
     } catch (error) {
-      console.error(`caught error at ${i}th row`);
+      console.error(`caught error at ${accountName} row`);
+      console.error(error);
       console.error("::group::page.content()");
       console.error(await page.content());
       console.error("::endgroup::");
