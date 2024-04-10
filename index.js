@@ -79,6 +79,17 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
     ]);
   }
 
+  const selectThisAccountButton = page.getByRole("button", {
+    name: "メールアドレスでログイン",
+  });
+  if (await selectThisAccountButton.count()) {
+    console.debug("click メールアドレスでログイン");
+    await Promise.all([
+      page.waitForURL(/\/accounts/),
+      selectThisAccountButton.click(),
+    ]);
+  }
+
   const rows = page
     .locator("section#registration-table.accounts table#account-table tr")
     .filter({
