@@ -116,6 +116,10 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
       });
       const updateButton = form.getByRole("button", { name: "更新" });
       await updateButton.waitFor();
+      if (await updateButton.isDisabled()) {
+        console.info("disabled", accountName);
+        continue;
+      }
       const action = await form.getAttribute("action");
       await Promise.all([page.waitForResponse(action), updateButton.click()]);
     } catch (error) {
