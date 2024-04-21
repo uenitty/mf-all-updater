@@ -6,6 +6,7 @@ const { chromium } = require("playwright");
 
 const HEADLESS = process.env.HEADLESS || "";
 const USER_DATA_DIR = "./user_data/";
+const SCREENSHOT_DIR = "./screenshot/";
 
 const EMAIL = process.env.EMAIL || "";
 const PASSWORD = process.env.PASSWORD || "";
@@ -18,7 +19,7 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
     return;
   }
 
-  console.debug({ HEADLESS, USER_DATA_DIR });
+  console.debug({ HEADLESS, USER_DATA_DIR, SCREENSHOT_DIR });
 
   console.debug("launch browser");
   const context = await chromium.launchPersistentContext(
@@ -138,9 +139,13 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
     console.error(error);
     process.exitCode = 1;
 
-    console.error("::group::page.content()");
-    console.error(await page.content());
-    console.error("::endgroup::");
+    const screenshot = path.join(
+      __dirname,
+      SCREENSHOT_DIR,
+      `${new Date().toLocaleDateString("ja-JP", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Tokyo", timeZoneName: "short" }).replaceAll("/", "-")}.png`,
+    );
+    console.error("screenshot", { screenshot });
+    await page.screenshot({ path: screenshot, fullPage: true });
   } finally {
     console.debug("close browser");
     await context.close();
