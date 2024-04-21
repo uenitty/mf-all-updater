@@ -19,7 +19,7 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
     return;
   }
 
-  console.debug({ HEADLESS, USER_DATA_DIR, SCREENSHOT_DIR });
+  console.debug({ HEADLESS, USER_DATA_DIR, SCREENSHOT_DIR, SKIP_LIST });
 
   console.debug("launch browser");
   const context = await chromium.launchPersistentContext(
