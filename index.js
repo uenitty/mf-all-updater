@@ -3,6 +3,7 @@
 require("dotenv").config();
 const { chromium } = require("playwright");
 
+const HEADLESS = process.env.HEADLESS || "";
 const EMAIL = process.env.EMAIL || "";
 const PASSWORD = process.env.PASSWORD || "";
 const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
@@ -14,8 +15,10 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
     return;
   }
 
+  console.debug({ HEADLESS });
+
   console.debug("launch browser");
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: HEADLESS === "true" });
 
   const context = await browser.newContext({
     baseURL: "https://moneyforward.com",

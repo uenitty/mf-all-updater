@@ -10,6 +10,7 @@ on:
   workflow_dispatch:
 
 env:
+  HEADLESS: ${{ vars.HEADLESS }}
   EMAIL: ${{ secrets.EMAIL }}
   PASSWORD: ${{ secrets.PASSWORD }}
   SKIP_LIST: ${{ secrets.SKIP_LIST }}
