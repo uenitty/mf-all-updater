@@ -13,7 +13,7 @@ env:
   HEADLESS: ${{ vars.HEADLESS }}
   EMAIL: ${{ secrets.EMAIL }}
   PASSWORD: ${{ secrets.PASSWORD }}
-  SKIP_LIST: ${{ secrets.SKIP_LIST }}
+  SKIP_LIST: ${{ vars.SKIP_LIST }}
 
 jobs:
   update:
