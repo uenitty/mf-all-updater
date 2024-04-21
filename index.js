@@ -28,6 +28,12 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
   console.debug("goto /accounts");
   await page.goto("/accounts");
 
+  const maintenanceText = page.getByText("メンテナンス作業中です");
+  if (await maintenanceText.count()) {
+    console.debug("exit メンテナンス作業中");
+    return;
+  }
+
   const loginLink = page.locator('a[href="/sign_in"]', {
     hasText: "ログイン",
   });
