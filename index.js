@@ -1,9 +1,12 @@
 // ref: https://github.com/kishikawakatsumi/mf-all-updater
 
 require("dotenv").config();
+const path = require("path");
 const { chromium } = require("playwright");
 
 const HEADLESS = process.env.HEADLESS || "";
+const USER_DATA_DIR = "./user_data/";
+
 const EMAIL = process.env.EMAIL || "";
 const PASSWORD = process.env.PASSWORD || "";
 const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
@@ -15,16 +18,19 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
     return;
   }
 
-  console.debug({ HEADLESS });
+  console.debug({ HEADLESS, USER_DATA_DIR });
 
   console.debug("launch browser");
-  const browser = await chromium.launch({ headless: HEADLESS === "true" });
-
-  const context = await browser.newContext({
-    baseURL: "https://moneyforward.com",
-    userAgent:
-      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.48 Safari/537.36",
-  });
+  const context = await chromium.launchPersistentContext(
+    path.join(__dirname, USER_DATA_DIR),
+    {
+      baseURL: "https://moneyforward.com",
+      headless: HEADLESS === "true",
+      locale: "ja-JP",
+      userAgent:
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.48 Safari/537.36",
+    },
+  );
 
   const page = await context.newPage();
 
@@ -59,15 +65,17 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
 
     const emailInput = page.locator('input[type="email"]');
     const passwordInput = page.locator('input[type="password"]');
-    console.debug("fill EMAIL");
-    await emailInput.fill(EMAIL);
-    console.debug("fill PASSWORD");
-    await passwordInput.fill(PASSWORD);
-    console.debug("submit EMAIL and PASSWORD");
-    await Promise.all([
-      page.waitForURL(/\/sign_in/),
-      passwordInput.press("Enter"),
-    ]);
+    if ((await emailInput.count()) || (await passwordInput.count())) {
+      console.debug("fill EMAIL");
+      await emailInput.fill(EMAIL);
+      console.debug("fill PASSWORD");
+      await passwordInput.fill(PASSWORD);
+      console.debug("submit EMAIL and PASSWORD");
+      await Promise.all([
+        page.waitForURL(/\/sign_in/),
+        passwordInput.press("Enter"),
+      ]);
+    }
 
     console.debug("goto /accounts");
     await page.goto("/accounts");
@@ -136,6 +144,5 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
   } finally {
     console.debug("close browser");
     await context.close();
-    await browser.close();
   }
 })();
