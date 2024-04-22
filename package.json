@@ -1,14 +1,19 @@
 {
   "name": "moneyforward",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.ts",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "update": "node index.js"
+    "update": "node -r esbuild-register index.ts",
+    "tsc": "tsc --noEmit"
   },
   "devDependencies": {
-    "prettier": "3.2.5"
+    "@types/node": "20.12.7",
+    "esbuild": "0.20.2",
+    "esbuild-register": "3.5.0",
+    "prettier": "3.2.5",
+    "typescript": "5.4.5"
   },
   "dependencies": {
     "dotenv": "16.4.5",
