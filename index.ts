@@ -1,8 +1,10 @@
 // ref: https://github.com/kishikawakatsumi/mf-all-updater
 
-require("dotenv").config();
-const path = require("path");
-const { chromium } = require("playwright");
+import "dotenv/config";
+
+import path from "path";
+
+import { chromium } from "playwright";
 
 const HEADLESS = process.env.HEADLESS || "";
 const USER_DATA_DIR = "./user_data/";
@@ -109,11 +111,13 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
         has: page.getByRole("button", { name: "更新" }),
       });
 
-    const accountNames = await Promise.all(
-      (await rows.locator("td:first-child a:first-child").all()).map(
-        (firstChild) => firstChild.textContent(),
-      ),
-    );
+    const accountNames = (
+      await Promise.all(
+        (await rows.locator("td:first-child a:first-child").all()).map(
+          (firstChild) => firstChild.textContent(),
+        ),
+      )
+    ).map((accountName) => accountName ?? "");
     console.debug("accountNames", accountNames);
 
     for (let accountName of accountNames) {
@@ -133,7 +137,10 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
         continue;
       }
       const action = await form.getAttribute("action");
-      await Promise.all([page.waitForResponse(action), updateButton.click()]);
+      await Promise.all([
+        page.waitForResponse(action ?? ""),
+        updateButton.click(),
+      ]);
     }
   } catch (error) {
     console.error(error);
