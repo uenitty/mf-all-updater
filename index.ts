@@ -126,17 +126,19 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
         continue;
       }
 
-      console.info("update", accountName);
-      const form = rows.filter({ hasText: accountName }).locator("form", {
-        has: page.getByRole("button", { name: "更新" }),
-      });
-      const updateButton = form.getByRole("button", { name: "更新" });
-      await updateButton.waitFor();
-      if (await updateButton.isDisabled()) {
+      const row = rows.filter({ hasText: accountName });
+
+      if (await row.getByRole("button", { name: "更新" }).isDisabled()) {
         console.info("disabled", accountName);
         continue;
       }
+
+      const form = row.locator("form", {
+        has: page.getByRole("button", { name: "更新" }),
+      });
+      const updateButton = form.getByRole("button", { name: "更新" });
       const action = await form.getAttribute("action");
+      console.info("update", accountName);
       await Promise.all([
         page.waitForResponse(action ?? ""),
         updateButton.click(),
