@@ -80,8 +80,10 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
       ]);
     }
 
-    console.debug("goto /accounts");
-    await page.goto("/accounts");
+    if (page.url() !== "https://moneyforward.com/accounts") {
+      console.debug("goto /accounts");
+      await page.goto("/accounts");
+    }
 
     const useThisAccountButton = page.getByRole("button", {
       name: "このアカウントを使用する",
