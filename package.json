@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@types/node": "20.12.12",
-    "esbuild": "0.21.3",
+    "esbuild": "0.21.4",
     "esbuild-register": "3.5.0",
     "prettier": "3.2.5",
     "typescript": "5.4.5"
