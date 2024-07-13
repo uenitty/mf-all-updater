@@ -12,7 +12,7 @@
     "@types/node": "20.14.10",
     "esbuild": "0.23.0",
     "esbuild-register": "3.5.0",
-    "prettier": "3.3.2",
+    "prettier": "3.3.3",
     "typescript": "5.5.3"
   },
   "dependencies": {
