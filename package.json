@@ -9,7 +9,7 @@
     "update_manual_account": "node -r esbuild-register update_manual_account.ts"
   },
   "devDependencies": {
-    "@types/node": "20.14.12",
+    "@types/node": "20.14.14",
     "esbuild": "0.23.0",
     "esbuild-register": "3.6.0",
     "prettier": "3.3.3",
