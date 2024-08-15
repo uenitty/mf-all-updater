@@ -5,8 +5,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "update_account": "node -r esbuild-register index.ts",
-    "update_manual_account": "node -r esbuild-register update_manual_account.ts"
+    "update_account": "tsx index.ts",
+    "update_manual_account": "tsx update_manual_account.ts"
   },
   "devDependencies": {
     "@types/node": "20.14.15",
