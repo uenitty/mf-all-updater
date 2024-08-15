@@ -5,14 +5,13 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "update_account": "node -r esbuild-register index.ts",
-    "update_manual_account": "node -r esbuild-register update_manual_account.ts"
+    "update_account": "tsx index.ts",
+    "update_manual_account": "tsx update_manual_account.ts"
   },
   "devDependencies": {
     "@types/node": "20.14.15",
-    "esbuild": "0.23.0",
-    "esbuild-register": "3.6.0",
     "prettier": "3.3.3",
+    "tsx": "4.17.0",
     "typescript": "5.5.4"
   },
   "dependencies": {
