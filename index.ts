@@ -120,7 +120,7 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
     ).map((accountName) => accountName ?? "");
     console.debug("accountNames", accountNames);
 
-    for (let accountName of accountNames) {
+    for (const accountName of accountNames) {
       if (SKIP_LIST.includes(accountName)) {
         console.info("skip", accountName);
         continue;
