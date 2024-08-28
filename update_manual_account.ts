@@ -161,7 +161,7 @@ const BVPS = process.env.BVPS || ""; // 簿価単価
     const screenshot = path.join(
       __dirname,
       SCREENSHOT_DIR,
-      `${new Date().toLocaleDateString("ja-JP", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Tokyo", timeZoneName: "short" }).replaceAll("/", "-")}.png`,
+      `${new Date().toLocaleDateString("ja-JP", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Tokyo", timeZoneName: "short" }).replaceAll("/", "-").replaceAll(":", "-")}.png`,
     );
     console.error("screenshot", { screenshot });
     await page.screenshot({ path: screenshot, fullPage: true });
