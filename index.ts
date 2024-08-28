@@ -7,6 +7,7 @@ import path from "path";
 import { chromium } from "playwright";
 
 const HEADLESS = process.env.HEADLESS || "";
+const PLAYWRIGHT_LOGGER = process.env.PLAYWRIGHT_LOGGER || "";
 const USER_DATA_DIR = "./user_data/";
 const SCREENSHOT_DIR = "./screenshot/";
 
@@ -31,7 +32,7 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
       headless: HEADLESS === "true",
       locale: "ja-JP",
       logger: {
-        isEnabled: (_name, _severity) => true,
+        isEnabled: (_name, _severity) => PLAYWRIGHT_LOGGER === "true",
         log: (name, severity, message, args, hints) =>
           console.log(`${name} [${severity}] ${message}`, { args, hints }),
       },
