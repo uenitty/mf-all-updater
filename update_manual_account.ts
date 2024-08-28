@@ -81,6 +81,12 @@ const BVPS = process.env.BVPS || ""; // 簿価単価
       ]);
     }
 
+    const additionalCertificationText = page.getByText("追加認証");
+    if (await additionalCertificationText.count()) {
+      console.debug("exit 追加認証");
+      return;
+    }
+
     console.debug("goto /accounts");
     await page.goto("/accounts");
 
