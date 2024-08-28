@@ -5,6 +5,7 @@ import path from "path";
 import { chromium } from "playwright";
 
 const HEADLESS = process.env.HEADLESS || "";
+const PLAYWRIGHT_DEBUG = process.env.PLAYWRIGHT_DEBUG || "";
 const USER_DATA_DIR = "./user_data/";
 const SCREENSHOT_DIR = "./screenshot/";
 
@@ -32,7 +33,7 @@ const BVPS = process.env.BVPS || ""; // 簿価単価
       headless: HEADLESS === "true",
       locale: "ja-JP",
       logger: {
-        isEnabled: (_name, _severity) => true,
+        isEnabled: (_name, _severity) => PLAYWRIGHT_DEBUG === "true",
         log: (name, severity, message, args, hints) =>
           console.log(`${name} [${severity}] ${message}`, { args, hints }),
       },
