@@ -31,7 +31,7 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
       headless: HEADLESS === "true",
       locale: "ja-JP",
       userAgent:
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.48 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
     },
   );
 
@@ -151,7 +151,7 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
     const screenshot = path.join(
       __dirname,
       SCREENSHOT_DIR,
-      `${new Date().toLocaleDateString("ja-JP", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Tokyo", timeZoneName: "short" }).replaceAll("/", "-")}.png`,
+      `${new Date().toLocaleDateString("ja-JP", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Tokyo", timeZoneName: "short" }).replaceAll("/", "-").replaceAll(":", "-")}.png`,
     );
     console.error("screenshot", { screenshot });
     await page.screenshot({ path: screenshot, fullPage: true });
