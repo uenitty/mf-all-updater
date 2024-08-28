@@ -30,6 +30,11 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
       baseURL: "https://moneyforward.com",
       headless: HEADLESS === "true",
       locale: "ja-JP",
+      logger: {
+        isEnabled: (_name, _severity) => true,
+        log: (name, severity, message, args, hints) =>
+          console.log(`${name} [${severity}] ${message}`, { args, hints }),
+      },
       userAgent:
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
     },

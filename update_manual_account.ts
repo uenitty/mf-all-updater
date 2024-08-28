@@ -31,6 +31,11 @@ const BVPS = process.env.BVPS || ""; // 簿価単価
       baseURL: "https://moneyforward.com",
       headless: HEADLESS === "true",
       locale: "ja-JP",
+      logger: {
+        isEnabled: (_name, _severity) => true,
+        log: (name, severity, message, args, hints) =>
+          console.log(`${name} [${severity}] ${message}`, { args, hints }),
+      },
       userAgent:
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.48 Safari/537.36",
     },
