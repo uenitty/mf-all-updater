@@ -80,6 +80,12 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
       ]);
     }
 
+    const additionalCertificationText = page.getByText("追加認証");
+    if (await additionalCertificationText.count()) {
+      console.debug("exit 追加認証");
+      return;
+    }
+
     console.debug("goto /accounts");
     await page.goto("/accounts");
 
