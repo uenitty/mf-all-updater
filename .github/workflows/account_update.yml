@@ -11,6 +11,7 @@ on:
 
 env:
   HEADLESS: ${{ vars.HEADLESS }}
+  PLAYWRIGHT_LOGGER: ${{ vars.PLAYWRIGHT_LOGGER }}
   EMAIL: ${{ secrets.EMAIL }}
   PASSWORD: ${{ secrets.PASSWORD }}
   SKIP_LIST: ${{ vars.SKIP_LIST }}
