@@ -30,7 +30,7 @@ jobs:
       - run: yarn install --check-files --frozen-lockfile --non-interactive
       - run: npx playwright install --with-deps chromium
       - run: echo "CURRENT_DATE=2024-08-27" >> $GITHUB_ENV
-      - uses: actions/cache@3624ceb22c1c5a301c8db4169662070a689d9ea8 # v4.1.1
+      - uses: actions/cache@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
         with:
           path: user_data
           key: ${{ runner.os }}-${{ env.CURRENT_DATE }}
