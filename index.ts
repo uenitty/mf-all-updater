@@ -1,6 +1,7 @@
 // ref: https://github.com/kishikawakatsumi/mf-all-updater
 
-import "dotenv/config";
+import { config } from "@dotenvx/dotenvx";
+config();
 
 import path from "path";
 
