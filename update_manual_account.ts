@@ -1,4 +1,5 @@
-import "dotenv/config";
+import { config } from "@dotenvx/dotenvx";
+config();
 
 import path from "path";
 
