@@ -30,6 +30,7 @@ const BVPS = process.env.BVPS || ""; // 簿価単価
     path.join(__dirname, USER_DATA_DIR),
     {
       baseURL: "https://moneyforward.com",
+      channel: "chromium",
       headless: HEADLESS === "true",
       locale: "ja-JP",
       logger: {

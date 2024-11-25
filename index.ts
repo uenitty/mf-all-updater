@@ -29,6 +29,7 @@ const SKIP_LIST = process.env.SKIP_LIST?.split(",") || [];
     path.join(__dirname, USER_DATA_DIR),
     {
       baseURL: "https://moneyforward.com",
+      channel: "chromium",
       headless: HEADLESS === "true",
       locale: "ja-JP",
       logger: {

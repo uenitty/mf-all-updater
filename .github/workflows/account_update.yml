@@ -28,7 +28,7 @@ jobs:
           node-version-file: ".node-version"
           cache: "yarn"
       - run: yarn install --check-files --frozen-lockfile --non-interactive
-      - run: npx playwright install --with-deps chromium
+      - run: npx playwright install --with-deps chromium --no-shell
       - run: echo "CURRENT_DATE=2024-08-27" >> $GITHUB_ENV
       - uses: actions/cache@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
         with:
