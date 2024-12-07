@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@dotenvx/dotenvx@1.26.0":
-  version "1.26.0"
-  resolved "https://registry.yarnpkg.com/@dotenvx/dotenvx/-/dotenvx-1.26.0.tgz#6cd3ecb9bbf6356114daf3d507a1bf9fb73890e2"
-  integrity sha512-EWsxqjmDRaMFnLeeE9xWfRY+01E7orW5xDvBoPho45DZ4V7jn6sIkcJdJrFvIrsRbiCFnbVpEubET0ydl/1K0g==
+"@dotenvx/dotenvx@1.28.0":
+  version "1.28.0"
+  resolved "https://registry.yarnpkg.com/@dotenvx/dotenvx/-/dotenvx-1.28.0.tgz#6d96fd3494947fd96b0a48607382d704c0366759"
+  integrity sha512-JJ9HgYBuvZpFvepGMnTj6/NQQX/Ska1N30GVln0Mw+wuL6oXZMOR2t/XrkSBjnjYr2rCiWtgDtTt8FajTJcbiA==
   dependencies:
     commander "^11.1.0"
     dotenv "^16.4.5"
