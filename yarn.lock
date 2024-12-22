@@ -17,7 +17,7 @@
     picomatch "^4.0.2"
     which "^4.0.0"
 
-"@ecies/ciphers@^0.2.1":
+"@ecies/ciphers@^0.2.2":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@ecies/ciphers/-/ciphers-0.2.2.tgz#82a15b10a6e502b63fb30915d944b2eaf3ff17ff"
   integrity sha512-ylfGR7PyTd+Rm2PqQowG08BCKA22QuX8NzrL+LxAAvazN10DMwdJ2fWwAzRj05FI/M8vNFGm3cv9Wq/GFWCBLg==
@@ -191,11 +191,11 @@ dotenv@^16.4.5:
   integrity sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==
 
 eciesjs@^0.4.10:
-  version "0.4.12"
-  resolved "https://registry.yarnpkg.com/eciesjs/-/eciesjs-0.4.12.tgz#0ce482454953592e07b79b4824751f3b5c508b56"
-  integrity sha512-DGejvMCihsRAmKRFQiL6KZDE34vWVd0gvXlykFq1aEzJy/rD65AVyAIUZKZOvgvaP9ATQRcHGEZV5DfgrgjA4w==
+  version "0.4.13"
+  resolved "https://registry.yarnpkg.com/eciesjs/-/eciesjs-0.4.13.tgz#89fbe2bc37d6dced8c3d1bccac21cceb20bcdcf3"
+  integrity sha512-zBdtR4K+wbj10bWPpIOF9DW+eFYQu8miU5ypunh0t4Bvt83ZPlEWgT5Dq/0G6uwEXumZKjfb5BZxYUZQ2Hzn/Q==
   dependencies:
-    "@ecies/ciphers" "^0.2.1"
+    "@ecies/ciphers" "^0.2.2"
     "@noble/ciphers" "^1.0.0"
     "@noble/curves" "^1.6.0"
     "@noble/hashes" "^1.5.0"
