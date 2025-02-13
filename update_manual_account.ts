@@ -14,8 +14,10 @@ const EMAIL = process.env.EMAIL || "";
 const PASSWORD = process.env.PASSWORD || "";
 const MANUAL_ACCOUNT_NAME = process.env.MANUAL_ACCOUNT_NAME || ""; // 口座名
 const SYMBOL = process.env.SYMBOL || ""; // 銘柄コード
-const NUMBER_OF_SHARES = process.env.NUMBER_OF_SHARES || ""; // 保有株数
-const BVPS = process.env.BVPS || ""; // 簿価単価
+const PORTAL_URL = process.env.PORTAL_URL || "";
+const PORTAL_CODE = process.env.PORTAL_CODE || "";
+const PORTAL_ID = process.env.PORTAL_ID || "";
+const PORTAL_PASSWORD = process.env.PORTAL_PASSWORD || "";
 
 (async () => {
   if (!EMAIL || !PASSWORD) {
@@ -47,6 +49,58 @@ const BVPS = process.env.BVPS || ""; // 簿価単価
   const page = await context.newPage();
 
   try {
+    console.debug("goto portal");
+    await page.goto(PORTAL_URL);
+
+    const iframe = page.frameLocator("#iframe");
+    const portalForm = iframe.locator("#form");
+    const portalCodeInput = portalForm.locator('input[id$="Cd"]');
+    const portalIdInput = portalForm.locator('input[id="loginId"]');
+    const portalPasswordInput = portalForm.locator('input[type="password"]');
+    const portalButton = portalForm.getByRole("button", { name: "ログイン" });
+    console.debug("fill PORTAL_CODE");
+    await portalCodeInput.fill(PORTAL_CODE);
+    console.debug("fill PORTAL_ID");
+    await portalIdInput.fill(PORTAL_ID);
+    console.debug("fill PORTAL_PASSWORD");
+    await portalPasswordInput.fill(PORTAL_PASSWORD);
+    console.debug("submit");
+    await Promise.all([page.waitForURL(/\/membertop/), portalButton.click()]);
+
+    console.debug("goto detail");
+    await page.getByRole("link", { name: "持株会" }).first().click();
+    await page.getByRole("link", { name: "拠出状況照会" }).first().click();
+    await page.waitForSelector("div.loading-div", { state: "hidden" });
+
+    console.debug("get numberOfShares and bvps");
+    const [numberOfSharesRowString, bvpsRowString] = await Promise.all([
+      await page
+        .getByRole("listitem")
+        .filter({ hasText: "保有株数" })
+        .innerText(),
+      await page
+        .getByRole("listitem")
+        .filter({ hasText: "簿価単価" })
+        .innerText(),
+    ]);
+
+    // 保有株数
+    const numberOfShares = Number(
+      numberOfSharesRowString
+        .replace(/\n/g, "")
+        .replace(/,/g, "")
+        .match(/保有株数(.*)株/)
+        ?.at(1),
+    );
+    // 簿価単価
+    const bvps = Number(
+      bvpsRowString
+        .replace(/\n/g, "")
+        .replace(/,/g, "")
+        .match(/簿価単価(.*)円/)
+        ?.at(1),
+    );
+
     console.debug("goto /accounts");
     await page.goto("/accounts");
 
@@ -153,7 +207,7 @@ const BVPS = process.env.BVPS || ""; // 簿価単価
       .locator("..")
       .getByRole("textbox")
       .fill(
-        `${Math.round(Number(regularMarketPrice) * Number(NUMBER_OF_SHARES))}`,
+        `${Math.round(Number(regularMarketPrice) * Number(numberOfShares))}`,
       );
 
     console.debug("fill 購入価格");
@@ -161,7 +215,7 @@ const BVPS = process.env.BVPS || ""; // 簿価単価
       .getByText("購入価格")
       .locator("..")
       .getByRole("textbox")
-      .fill(`${Math.round(Number(BVPS) * Number(NUMBER_OF_SHARES))}`);
+      .fill(`${Math.round(Number(bvps) * Number(numberOfShares))}`);
 
     console.debug("click この内容で登録する");
     await Promise.all([

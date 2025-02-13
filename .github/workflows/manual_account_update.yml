@@ -16,8 +16,10 @@ env:
   PASSWORD: ${{ secrets.PASSWORD }}
   MANUAL_ACCOUNT_NAME: ${{ secrets.MANUAL_ACCOUNT_NAME }}
   SYMBOL: ${{ secrets.SYMBOL }}
-  NUMBER_OF_SHARES: ${{ secrets.NUMBER_OF_SHARES }}
-  BVPS: ${{ secrets.BVPS }}
+  PORTAL_URL: ${{ secrets.PORTAL_URL }}
+  PORTAL_CODE: ${{ secrets.PORTAL_CODE }}
+  PORTAL_ID: ${{ secrets.PORTAL_ID }}
+  PORTAL_PASSWORD: ${{ secrets.PORTAL_PASSWORD }}
 
 jobs:
   update_manual_account:
