@@ -204,10 +204,7 @@ const PORTAL_PASSWORD = process.env.PORTAL_PASSWORD || "";
     );
 
     if (!Number.isFinite(regularMarketPrice) || regularMarketPrice <= 0) {
-      console.error("regularMarketPrice is invalid.", {
-        body,
-        regularMarketPrice,
-      });
+      console.error("regularMarketPrice is invalid.");
       process.exitCode = 1;
       return;
     }
