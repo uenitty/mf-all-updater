@@ -101,6 +101,17 @@ const PORTAL_PASSWORD = process.env.PORTAL_PASSWORD || "";
         ?.at(1),
     );
 
+    if (
+      !Number.isFinite(numberOfShares) ||
+      numberOfShares <= 0 ||
+      !Number.isFinite(bvps) ||
+      bvps <= 0
+    ) {
+      console.error("numberOfShares or bvps is invalid.");
+      process.exitCode = 1;
+      return;
+    }
+
     console.debug("goto /accounts");
     await page.goto("/accounts");
 
