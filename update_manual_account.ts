@@ -68,9 +68,9 @@ const PORTAL_PASSWORD = process.env.PORTAL_PASSWORD || "";
     await Promise.all([page.waitForURL(/\/membertop/), portalButton.click()]);
 
     console.debug("goto detail");
-    await page.getByRole("link", { name: "持株会" }).first().click();
+    await page.getByRole("link").getByText("持株会", { exact: true }).click();
     await page.getByRole("link", { name: "拠出状況照会" }).first().click();
-    await page.waitForSelector("div.loading-div", { state: "hidden" });
+    await page.locator("div.loading-div").waitFor({ state: "hidden" });
 
     console.debug("get numberOfShares and bvps");
     const [numberOfSharesRowString, bvpsRowString] = await Promise.all([
