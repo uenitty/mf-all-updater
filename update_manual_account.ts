@@ -52,6 +52,13 @@ const PORTAL_PASSWORD = process.env.PORTAL_PASSWORD || "";
     console.debug("goto portal");
     await page.goto(PORTAL_URL);
 
+    const outOfServiceText =
+      page.getByText("一時的にサービスを停止しております");
+    if (await outOfServiceText.count()) {
+      console.debug("exit 一時的なサービス停止");
+      return;
+    }
+
     const iframe = page.frameLocator("#iframe");
     const portalForm = iframe.locator("#form");
     const portalCodeInput = portalForm.locator('input[id$="Cd"]');
@@ -65,9 +72,22 @@ const PORTAL_PASSWORD = process.env.PORTAL_PASSWORD || "";
     await portalPasswordInput.fill(PORTAL_PASSWORD);
     console.debug("submit");
     await Promise.all([
-      page.waitForURL(/\/membertop/),
+      Promise.race([
+        page.waitForURL(/\/membertop/),
+        iframe
+          .getByText("ただいまサービスのご利用可能時間外です")
+          .waitFor({ state: "visible" }),
+      ]),
       portalPasswordInput.press("Enter"),
     ]);
+
+    const outsideHoursText = iframe.getByText(
+      "ただいまサービスのご利用可能時間外です",
+    );
+    if (await outsideHoursText.count()) {
+      console.debug("exit サービス利用可能時間外");
+      return;
+    }
 
     console.debug("goto detail");
     await page.getByRole("link").getByText("持株会", { exact: true }).click();
