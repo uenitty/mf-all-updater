@@ -57,7 +57,6 @@ const PORTAL_PASSWORD = process.env.PORTAL_PASSWORD || "";
     const portalCodeInput = portalForm.locator('input[id$="Cd"]');
     const portalIdInput = portalForm.locator('input[id="loginId"]');
     const portalPasswordInput = portalForm.locator('input[type="password"]');
-    const portalButton = portalForm.getByRole("button", { name: "ログイン" });
     console.debug("fill PORTAL_CODE");
     await portalCodeInput.fill(PORTAL_CODE);
     console.debug("fill PORTAL_ID");
@@ -65,7 +64,10 @@ const PORTAL_PASSWORD = process.env.PORTAL_PASSWORD || "";
     console.debug("fill PORTAL_PASSWORD");
     await portalPasswordInput.fill(PORTAL_PASSWORD);
     console.debug("submit");
-    await Promise.all([page.waitForURL(/\/membertop/), portalButton.click()]);
+    await Promise.all([
+      page.waitForURL(/\/membertop/),
+      portalPasswordInput.press("Enter"),
+    ]);
 
     console.debug("goto detail");
     await page.getByRole("link").getByText("持株会", { exact: true }).click();
