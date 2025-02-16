@@ -59,8 +59,8 @@ const PORTAL_PASSWORD = process.env.PORTAL_PASSWORD || "";
       return;
     }
 
-    const iframe = page.frameLocator("#iframe");
-    const portalForm = iframe.locator("#form");
+    const iframe = page.locator("#iframe");
+    const portalForm = iframe.contentFrame().locator("#form");
     const portalCodeInput = portalForm.locator('input[id$="Cd"]');
     const portalIdInput = portalForm.locator('input[id="loginId"]');
     const portalPasswordInput = portalForm.locator('input[type="password"]');
@@ -75,18 +75,21 @@ const PORTAL_PASSWORD = process.env.PORTAL_PASSWORD || "";
       Promise.race([
         page.waitForURL(/\/membertop/),
         iframe
+          .contentFrame()
           .getByText("ただいまサービスのご利用可能時間外です")
           .waitFor({ state: "visible" }),
       ]),
       portalPasswordInput.press("Enter"),
     ]);
 
-    const outsideHoursText = iframe.getByText(
-      "ただいまサービスのご利用可能時間外です",
-    );
-    if (await outsideHoursText.count()) {
-      console.debug("exit サービス利用可能時間外");
-      return;
+    if (await iframe.isVisible()) {
+      const outsideHoursText = iframe
+        .contentFrame()
+        .getByText("ただいまサービスのご利用可能時間外です");
+      if (await outsideHoursText.count()) {
+        console.debug("exit サービス利用可能時間外");
+        return;
+      }
     }
 
     console.debug("goto detail");
