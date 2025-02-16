@@ -3,6 +3,7 @@ config();
 
 import path from "path";
 
+import { google } from "googleapis";
 import { chromium } from "playwright";
 
 const HEADLESS = process.env.HEADLESS || "";
@@ -137,6 +138,7 @@ const PORTAL_PASSWORD = process.env.PORTAL_PASSWORD || "";
       return;
     }
 
+    const startTimestamp = Date.now();
     console.debug("goto /accounts");
     await page.goto("/accounts");
 
@@ -181,7 +183,69 @@ const PORTAL_PASSWORD = process.env.PORTAL_PASSWORD || "";
 
     const additionalCertificationText = page.getByText("追加認証");
     if (await additionalCertificationText.count()) {
-      console.debug("exit 追加認証");
+      console.debug("detected 追加認証");
+      const auth = new google.auth.GoogleAuth({
+        scopes: ["https://www.googleapis.com/auth/gmail.readonly"],
+      });
+      const gmail = google.gmail({ version: "v1", auth });
+      for (let retryCount = 0; true; retryCount += 1) {
+        console.debug("fetch email", { retryCount });
+        const listMessageResponse = await gmail.users.messages.list({
+          maxResults: 1,
+          q: "from:(do_not_reply@moneyforward.com) 追加認証",
+          userId: "me",
+        });
+        const messageId = listMessageResponse.data.messages?.at(0)?.id;
+        if (!messageId) {
+          console.debug("message not found.", {
+            "listMessageResponse.status": listMessageResponse.status,
+          });
+          await page.waitForTimeout(3 * 1000);
+          continue;
+        }
+        const getMessageResponse = await gmail.users.messages.get({
+          format: "raw",
+          id: messageId,
+          userId: "me",
+        });
+        if (getMessageResponse.status !== 200) {
+          console.debug("error.", {
+            "getMessageResponse.status": getMessageResponse.status,
+          });
+          await page.waitForTimeout(3 * 1000);
+          continue;
+        }
+        if (Number(getMessageResponse.data.internalDate) < startTimestamp) {
+          console.debug("new message not found.");
+          await page.waitForTimeout(3 * 1000);
+          continue;
+        }
+        const body = Buffer.from(
+          getMessageResponse.data.raw ?? "",
+          "base64",
+        ).toString();
+        const line = body
+          .match(/^.*verification_code.*\b(\d{6})\b.*$/gm)
+          ?.at(-1);
+        const verificationCode = line?.match(/\d{6}/)?.at(0);
+        if (verificationCode) {
+          const verificationCodeInput = page.getByRole("textbox");
+          console.debug("fill verificationCode");
+          await verificationCodeInput.fill(verificationCode);
+          console.debug("submit verificationCode");
+          await Promise.all([
+            page.waitForURL(/\/sign_in/),
+            verificationCodeInput.press("Enter"),
+          ]);
+          break;
+        }
+        if (retryCount >= 10) {
+          console.error("timeout.");
+          process.exitCode = 1;
+          return;
+        }
+        await page.waitForTimeout(3 * 1000);
+      }
       return;
     }
 
