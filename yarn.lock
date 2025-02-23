@@ -191,9 +191,9 @@ dotenv@^16.4.5:
   integrity sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==
 
 eciesjs@^0.4.10:
-  version "0.4.13"
-  resolved "https://registry.yarnpkg.com/eciesjs/-/eciesjs-0.4.13.tgz#89fbe2bc37d6dced8c3d1bccac21cceb20bcdcf3"
-  integrity sha512-zBdtR4K+wbj10bWPpIOF9DW+eFYQu8miU5ypunh0t4Bvt83ZPlEWgT5Dq/0G6uwEXumZKjfb5BZxYUZQ2Hzn/Q==
+  version "0.4.14"
+  resolved "https://registry.yarnpkg.com/eciesjs/-/eciesjs-0.4.14.tgz#a48c527f7754b4390dfd7e863fe0166c1972be94"
+  integrity sha512-eJAgf9pdv214Hn98FlUzclRMYWF7WfoLlkS9nWMTm1qcCwn6Ad4EGD9lr9HXMBfSrZhYQujRE+p0adPRkctC6A==
   dependencies:
     "@ecies/ciphers" "^0.2.2"
     "@noble/ciphers" "^1.0.0"
