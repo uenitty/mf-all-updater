@@ -12,7 +12,7 @@
     "@types/node": "22.13.6",
     "prettier": "3.5.2",
     "tsx": "4.19.3",
-    "typescript": "5.7.3"
+    "typescript": "5.8.2"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "1.38.3",
