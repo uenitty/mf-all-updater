@@ -56,3 +56,4 @@ jobs:
           path: node_modules
           key: install-deps-${{ github.sha }}
       - run: yarn tsc
+      - run: npx --yes --package renovate -- renovate-config-validator --strict
