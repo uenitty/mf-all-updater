@@ -16,6 +16,6 @@
   },
   "dependencies": {
     "@dotenvx/dotenvx": "1.38.4",
-    "playwright": "1.50.1"
+    "playwright": "1.51.0"
   }
 }
