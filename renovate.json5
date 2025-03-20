@@ -1,7 +1,7 @@
 {
   extends: [
     "config:recommended",
-    "helpers:pinGitHubActionDigests",
+    "helpers:pinGitHubActionDigestsToSemver",
     "schedule:weekends",
     ":automergeAll",
     ":label(renovate)",
