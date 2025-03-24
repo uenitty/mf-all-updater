@@ -10,5 +10,6 @@
     ":timezone(Asia/Tokyo)",
   ],
   configMigration: true,
+  minimumReleaseAge: "3 days",
   postUpdateOptions: ["yarnDedupeHighest"],
 }
