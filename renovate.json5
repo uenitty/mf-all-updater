@@ -2,7 +2,7 @@
   extends: [
     "config:recommended",
     "helpers:pinGitHubActionDigestsToSemver",
-    "schedule:weekends",
+    "schedule:nonOfficeHours",
     ":automergeAll",
     ":label(renovate)",
     ":maintainLockFilesWeekly",
