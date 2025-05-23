@@ -15,7 +15,7 @@
     "typescript": "5.8.3"
   },
   "dependencies": {
-    "@dotenvx/dotenvx": "1.44.0",
+    "@dotenvx/dotenvx": "1.44.1",
     "playwright": "1.52.0"
   }
 }
