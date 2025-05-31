@@ -9,7 +9,7 @@
     "update_manual_account": "tsx update_manual_account.ts"
   },
   "devDependencies": {
-    "@types/node": "22.15.23",
+    "@types/node": "22.15.24",
     "prettier": "3.5.3",
     "tsx": "4.19.4",
     "typescript": "5.8.3"
