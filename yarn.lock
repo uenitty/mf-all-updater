@@ -333,9 +333,9 @@ extend@^3.0.2:
   integrity sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==
 
 fdir@^6.2.0:
-  version "6.4.5"
-  resolved "https://registry.yarnpkg.com/fdir/-/fdir-6.4.5.tgz#328e280f3a23699362f95f2e82acf978a0c0cb49"
-  integrity sha512-4BG7puHpVsIYxZUbiUE3RqGloLaSSwzYie5jvasC4LWuBWzZawynvYouhjbQKw2JuIGYdm0DzIxl8iVidKlUEw==
+  version "6.4.6"
+  resolved "https://registry.yarnpkg.com/fdir/-/fdir-6.4.6.tgz#2b268c0232697063111bbf3f64810a2a741ba281"
+  integrity sha512-hiFoqpyZcfNm1yc4u8oWCf9A2c4D3QjCrks3zmoVKVxpQRzmPNar1hUJcBG2RQHvEVGDN+Jm81ZheVLAQMK6+w==
 
 fetch-blob@^3.1.2, fetch-blob@^3.1.4:
   version "3.2.0"
@@ -367,21 +367,21 @@ function-bind@^1.1.2:
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.2.tgz#2c02d864d97f3ea6c8830c464cbd11ab6eab7a1c"
   integrity sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==
 
-gaxios@^7.0.0-rc.1, gaxios@^7.0.0-rc.4:
-  version "7.0.0-rc.6"
-  resolved "https://registry.yarnpkg.com/gaxios/-/gaxios-7.0.0-rc.6.tgz#4648afddc60b05eb9cb901534ba9493f1a390df0"
-  integrity sha512-osVFpgeBiwTM2AVI9MXvb8iWzM6oSMbTVWc65Gm5BgBlE+nUA6PBHFMaYpqjZx1AhUH7aPOZq78WcRAM6hhAwA==
+gaxios@^7.0.0, gaxios@^7.0.0-rc.4:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/gaxios/-/gaxios-7.1.0.tgz#095fe2cf464a9fef7ee49a69821a4114d6872454"
+  integrity sha512-y1Q0MX1Ba6eg67Zz92kW0MHHhdtWksYckQy1KJsI6P4UlDQ8cvdvpLEPslD/k7vFkdPppMESFGTvk7XpSiKj8g==
   dependencies:
     extend "^3.0.2"
     https-proxy-agent "^7.0.1"
     node-fetch "^3.3.2"
 
-gcp-metadata@^7.0.0-rc.1:
-  version "7.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/gcp-metadata/-/gcp-metadata-7.0.0-rc.1.tgz#ddce444cf1ca780e8df0db15d4e5907ca8388cd5"
-  integrity sha512-E6c+AdIaK1LNA839OyotiTca+B2IG1nDlMjnlcck8JjXn3fVgx57Ib9i6iL1/iqN7bA3EUQdcRRu+HqOCOABIg==
+gcp-metadata@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/gcp-metadata/-/gcp-metadata-7.0.0.tgz#339dd04c7980f2436dbceda857e3217178779818"
+  integrity sha512-3PfRTzvT3Msu0Hy8Gf9ypxJvaClG2IB9pyH0r8QOmRBW5mUcrHgYpF4GYP+XulDbfhxEhBYtJtJJQb5S2wM+LA==
   dependencies:
-    gaxios "^7.0.0-rc.1"
+    gaxios "^7.0.0"
     google-logging-utils "^1.0.0"
     json-bigint "^1.0.0"
 
@@ -422,16 +422,16 @@ get-tsconfig@^4.7.5:
     resolve-pkg-maps "^1.0.0"
 
 google-auth-library@^10.0.0-rc.1:
-  version "10.0.0-rc.3"
-  resolved "https://registry.yarnpkg.com/google-auth-library/-/google-auth-library-10.0.0-rc.3.tgz#9eaec319b8b63984536db90b94562e3f8cb1d068"
-  integrity sha512-WC9wfEKK0bk3seWKsDn2loduLth6JWKTsrbWftzrhPuzpwnVXb5oi2+aa0JDBxLBDdkGesLvTQ67F2nZ7leq1Q==
+  version "10.1.0"
+  resolved "https://registry.yarnpkg.com/google-auth-library/-/google-auth-library-10.1.0.tgz#5412fa2b7f2c4fe169c6cc56b9425319137e17e9"
+  integrity sha512-GspVjZj1RbyRWpQ9FbAXMKjFGzZwDKnUHi66JJ+tcjcu5/xYAP1pdlWotCuIkMwjfVsxxDvsGZXGLzRt72D0sQ==
   dependencies:
     base64-js "^1.3.0"
     ecdsa-sig-formatter "^1.0.11"
-    gaxios "^7.0.0-rc.4"
-    gcp-metadata "^7.0.0-rc.1"
+    gaxios "^7.0.0"
+    gcp-metadata "^7.0.0"
     google-logging-utils "^1.0.0"
-    gtoken "^8.0.0-rc.1"
+    gtoken "^8.0.0"
     jws "^4.0.0"
 
 google-logging-utils@^1.0.0:
@@ -463,12 +463,12 @@ gopd@^1.2.0:
   resolved "https://registry.yarnpkg.com/gopd/-/gopd-1.2.0.tgz#89f56b8217bdbc8802bd299df6d7f1081d7e51a1"
   integrity sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==
 
-gtoken@^8.0.0-rc.1:
-  version "8.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/gtoken/-/gtoken-8.0.0-rc.1.tgz#3877f1069f02ae99548f5d285d6c1834b692e22a"
-  integrity sha512-UjE/egX6ixArdcCKOkheuFQ4XN4/0gX92nd2JPVEYuRU2sWHAWuOVGnowm1fQUdQtaxqn1n8H0hOb2LCaUhJ3A==
+gtoken@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/gtoken/-/gtoken-8.0.0.tgz#d67a0e346dd441bfb54ad14040ddc3b632886575"
+  integrity sha512-+CqsMbHPiSTdtSO14O51eMNlrp9N79gmeqmXeouJOhfucAedHw9noVe/n5uJk3tbKE6a+6ZCQg3RPhVhHByAIw==
   dependencies:
-    gaxios "^7.0.0-rc.1"
+    gaxios "^7.0.0"
     jws "^4.0.0"
 
 has-symbols@^1.1.0:
