@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@dotenvx/dotenvx": "1.47.1",
-    "googleapis": "150.0.1",
+    "googleapis": "152.0.0",
     "playwright": "1.53.2"
   }
 }
