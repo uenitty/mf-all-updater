@@ -15,6 +15,9 @@ env:
   EMAIL: ${{ secrets.EMAIL }}
   PASSWORD: ${{ secrets.PASSWORD }}
   SKIP_LIST: ${{ vars.SKIP_LIST }}
+  GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+  GMAIL_CLIENT_SECRET: ${{ secrets.GMAIL_CLIENT_SECRET }}
+  GMAIL_REFRESH_TOKEN: ${{ secrets.GMAIL_REFRESH_TOKEN }}
 
 jobs:
   update_account:

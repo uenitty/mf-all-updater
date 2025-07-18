@@ -20,6 +20,9 @@ env:
   PORTAL_CODE: ${{ secrets.PORTAL_CODE }}
   PORTAL_ID: ${{ secrets.PORTAL_ID }}
   PORTAL_PASSWORD: ${{ secrets.PORTAL_PASSWORD }}
+  GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+  GMAIL_CLIENT_SECRET: ${{ secrets.GMAIL_CLIENT_SECRET }}
+  GMAIL_REFRESH_TOKEN: ${{ secrets.GMAIL_REFRESH_TOKEN }}
 
 jobs:
   update_manual_account:
