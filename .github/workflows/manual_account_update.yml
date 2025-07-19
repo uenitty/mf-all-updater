@@ -6,7 +6,7 @@ on:
       - main
   repository_dispatch:
   schedule:
-    - cron: "30 6 * * *" # 15:30 JST
+    - cron: "30 6-9 * * *" # 15:30 JST (+ 3 times in reserve)
   workflow_dispatch:
 
 env:
