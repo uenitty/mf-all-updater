@@ -37,7 +37,7 @@ jobs:
           cache: "yarn"
       - run: yarn install --check-files --frozen-lockfile --non-interactive
       - run: npx playwright install --with-deps chromium --no-shell
-      - run: echo "CURRENT_DATE=2024-08-27" >> $GITHUB_ENV
+      - run: echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
       - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         with:
           path: user_data
