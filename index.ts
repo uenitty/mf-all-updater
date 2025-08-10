@@ -21,6 +21,9 @@ const GMAIL_CLIENT_ID = process.env.GMAIL_CLIENT_ID || "";
 const GMAIL_CLIENT_SECRET = process.env.GMAIL_CLIENT_SECRET || "";
 const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
 
+const SLACK_CHANNEL_ID = process.env.SLACK_CHANNEL_ID || "";
+const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || "";
+
 (async () => {
   if (!EMAIL || !PASSWORD) {
     console.error("Please set EMAIL and PASSWORD environment variables.");
@@ -259,7 +262,7 @@ const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
     process.exitCode = 1;
 
     const screenshotName = new Date()
-      .toLocaleDateString("ja-JP", {
+      .toLocaleString("ja-JP", {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
@@ -271,11 +274,23 @@ const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
         timeZoneName: "short",
       })
       .replaceAll("/", "-")
-      .replaceAll(":", "-");
+      .replaceAll(":", "-")
+      .replaceAll(" ", "_");
     const filename = `${screenshotName}.png`;
     const screenshot = path.join(__dirname, SCREENSHOT_DIR, filename);
-    console.error("デバッグ用にスクリーンショットを撮影...", { screenshot });
-    await page.screenshot({ path: screenshot, fullPage: true });
+    console.debug("デバッグ用にスクリーンショットを撮影...", { screenshot });
+    const buffer = await page.screenshot({ path: screenshot, fullPage: true });
+    const formData = new FormData();
+    formData.append("channels", SLACK_CHANNEL_ID);
+    formData.append("file", new Blob([Uint8Array.from(buffer)]), filename);
+    formData.append("initial_comment", "エラーが発生。");
+    console.debug("Slackに送信...");
+    const response = await fetch("https://slack.com/api/files.upload", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${SLACK_BOT_TOKEN}` },
+      body: formData,
+    });
+    console.debug("Slackに送信。", await response.json());
   } finally {
     console.debug("ブラウザを終了...");
     await context.close();
