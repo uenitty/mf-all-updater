@@ -78,7 +78,6 @@ const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || "";
     await portalIdInput.fill(PORTAL_ID);
     console.debug("パスワードを自動入力...");
     await portalPasswordInput.fill(PORTAL_PASSWORD);
-    console.debug("submit");
     console.debug("ログイン情報を送信...");
     await Promise.all([
       Promise.race([
