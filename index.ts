@@ -231,11 +231,22 @@ const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
     console.error(error);
     process.exitCode = 1;
 
-    const screenshot = path.join(
-      __dirname,
-      SCREENSHOT_DIR,
-      `${new Date().toLocaleDateString("ja-JP", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Tokyo", timeZoneName: "short" }).replaceAll("/", "-").replaceAll(":", "-")}.png`,
-    );
+    const screenshotName = new Date()
+      .toLocaleDateString("ja-JP", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+        timeZone: "Asia/Tokyo",
+        timeZoneName: "short",
+      })
+      .replaceAll("/", "-")
+      .replaceAll(":", "-");
+    const filename = `${screenshotName}.png`;
+    const screenshot = path.join(__dirname, SCREENSHOT_DIR, filename);
     console.error("screenshot", { screenshot });
     await page.screenshot({ path: screenshot, fullPage: true });
   } finally {
