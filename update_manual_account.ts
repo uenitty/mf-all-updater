@@ -24,6 +24,9 @@ const GMAIL_CLIENT_ID = process.env.GMAIL_CLIENT_ID || "";
 const GMAIL_CLIENT_SECRET = process.env.GMAIL_CLIENT_SECRET || "";
 const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
 
+const SLACK_CHANNEL_ID = process.env.SLACK_CHANNEL_ID || "";
+const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || "";
+
 (async () => {
   if (!EMAIL || !PASSWORD) {
     console.error("Please set EMAIL and PASSWORD environment variables.");
@@ -33,7 +36,7 @@ const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
 
   console.debug({ HEADLESS, USER_DATA_DIR, SCREENSHOT_DIR });
 
-  console.debug("launch browser");
+  console.debug("ブラウザを起動...");
   const context = await chromium.launchPersistentContext(
     path.join(__dirname, USER_DATA_DIR),
     {
@@ -50,17 +53,17 @@ const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.48 Safari/537.36",
     },
   );
-
   const page = await context.newPage();
 
   try {
-    console.debug("goto portal");
+    console.debug("ポータルページにアクセス...");
     await page.goto(PORTAL_URL);
 
     const outOfServiceText =
       page.getByText("一時的にサービスを停止しております");
+    console.debug("一時的なサービス停止中か確認...");
     if (await outOfServiceText.count()) {
-      console.debug("exit 一時的なサービス停止");
+      console.error("🟡一時的なサービス停止中のため中断。");
       return;
     }
 
@@ -69,13 +72,14 @@ const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
     const portalCodeInput = portalForm.locator('input[id$="Cd"]');
     const portalIdInput = portalForm.locator('input[id="loginId"]');
     const portalPasswordInput = portalForm.locator('input[type="password"]');
-    console.debug("fill PORTAL_CODE");
+    console.debug("ポータルコードを自動入力...");
     await portalCodeInput.fill(PORTAL_CODE);
-    console.debug("fill PORTAL_ID");
+    console.debug("IDを自動入力...");
     await portalIdInput.fill(PORTAL_ID);
-    console.debug("fill PORTAL_PASSWORD");
+    console.debug("パスワードを自動入力...");
     await portalPasswordInput.fill(PORTAL_PASSWORD);
     console.debug("submit");
+    console.debug("ログイン情報を送信...");
     await Promise.all([
       Promise.race([
         page.waitForURL(/\/membertop/),
@@ -87,17 +91,18 @@ const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
       portalPasswordInput.press("Enter"),
     ]);
 
+    console.debug("サービス利用可能時間外か確認...");
     if (await iframe.isVisible()) {
       const outsideHoursText = iframe
         .contentFrame()
         .getByText("ただいまサービスのご利用可能時間外です");
       if (await outsideHoursText.count()) {
-        console.debug("exit サービス利用可能時間外");
+        console.error("🟡サービス利用可能時間外のため中断。");
         return;
       }
     }
 
-    console.debug("goto detail");
+    console.debug("詳細ページへ遷移...");
     await page.getByRole("link").getByText("持株会", { exact: true }).click();
     await page.getByRole("link", { name: "拠出状況照会" }).first().click();
     await page.locator("div.loading-div").waitFor({ state: "hidden" });
@@ -143,28 +148,32 @@ const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
     }
 
     const startTimestamp = Date.now();
-    console.debug("goto /accounts");
+
+    console.debug("口座ページにアクセス...");
     await page.goto("/accounts");
 
     const maintenanceText = page.getByText("メンテナンス作業中です");
-    if (await maintenanceText.count()) {
-      console.debug("exit メンテナンス作業中");
+    console.debug("メンテナンス作業中か確認...");
+    if (await maintenanceText.isVisible()) {
+      console.error("🟡メンテナンス作業中のため中断。");
       return;
     }
 
     const loginLink = page.locator('a[href="/sign_in"]', {
       hasText: "ログイン",
     });
-    if (await loginLink.count()) {
-      console.debug("click ログイン");
+    console.debug("ログインリンクがあるか確認...");
+    if (await loginLink.isVisible()) {
+      console.debug("ログインリンクをクリック...");
       await Promise.all([page.waitForURL(/\/sign_in/), loginLink.click()]);
     }
 
     const loginWithEmailLink = page.locator('a[href^="/sign_in/email"]', {
       hasText: "メールアドレスでログイン",
     });
-    if (await loginWithEmailLink.count()) {
-      console.debug("click メールアドレスでログイン");
+    console.debug("メールアドレスでログインリンクがあるか確認...");
+    if (await loginWithEmailLink.isVisible()) {
+      console.debug("メールアドレスでログインリンクをクリック...");
       await Promise.all([
         page.waitForURL(/\/sign_in/),
         loginWithEmailLink.click(),
@@ -173,12 +182,13 @@ const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
 
     const emailInput = page.locator('input[type="email"]');
     const passwordInput = page.locator('input[type="password"]');
-    if ((await emailInput.count()) || (await passwordInput.count())) {
-      console.debug("fill EMAIL");
+    console.debug("メールアドレスとパスワードの入力欄があるか確認...");
+    if ((await emailInput.isVisible()) || (await passwordInput.isVisible())) {
+      console.debug("メールアドレスを自動入力...");
       await emailInput.fill(EMAIL);
-      console.debug("fill PASSWORD");
+      console.debug("パスワードを自動入力...");
       await passwordInput.fill(PASSWORD);
-      console.debug("submit EMAIL and PASSWORD");
+      console.debug("メールアドレスとパスワードを送信...");
       await Promise.all([
         page.waitForURL(/\/sign_in/),
         passwordInput.press("Enter"),
@@ -186,8 +196,8 @@ const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
     }
 
     const additionalCertificationText = page.getByText("追加認証");
+    console.debug("追加認証が必要か確認...");
     if (await additionalCertificationText.count()) {
-      console.debug("detected 追加認証");
       const auth = new google.auth.OAuth2({
         clientId: GMAIL_CLIENT_ID,
         clientSecret: GMAIL_CLIENT_SECRET,
@@ -195,7 +205,14 @@ const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
       auth.setCredentials({ refresh_token: GMAIL_REFRESH_TOKEN });
       const gmail = google.gmail({ version: "v1", auth });
       for (let retryCount = 0; true; retryCount += 1) {
-        console.debug("fetch email", { retryCount });
+        if (retryCount > 9) {
+          console.error("🟡確認回数の上限のため中断。");
+          process.exitCode = 1;
+          return;
+        }
+        console.debug("追加認証のメールを受信しているか確認...", {
+          retryCount,
+        });
         const listMessageResponse = await gmail.users.messages.list({
           maxResults: 1,
           q: "from:(do_not_reply@moneyforward.com) 追加認証",
@@ -203,29 +220,34 @@ const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
         });
         const messageId = listMessageResponse.data.messages?.at(0)?.id;
         if (!messageId) {
-          console.debug("message not found.", {
+          console.debug("追加認証のメールは未受信。", {
             "listMessageResponse.status": listMessageResponse.status,
           });
+          console.debug("次の確認まで待機...");
           await page.waitForTimeout(3 * 1000);
           continue;
         }
+        console.debug("追加認証のメール本文を取得...");
         const getMessageResponse = await gmail.users.messages.get({
           format: "raw",
           id: messageId,
           userId: "me",
         });
         if (getMessageResponse.status !== 200) {
-          console.debug("error.", {
+          console.debug("取得時にエラーが発生。", {
             "getMessageResponse.status": getMessageResponse.status,
           });
+          console.debug("次の確認まで待機...");
           await page.waitForTimeout(3 * 1000);
           continue;
         }
         if (Number(getMessageResponse.data.internalDate) < startTimestamp) {
-          console.debug("new message not found.");
+          console.debug("新しいメールではないことを検知。");
+          console.debug("次の確認まで待機...");
           await page.waitForTimeout(3 * 1000);
           continue;
         }
+        console.debug("メール本文から認証コードを抽出...");
         const body = Buffer.from(
           getMessageResponse.data.raw ?? "",
           "base64",
@@ -234,34 +256,42 @@ const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
           .match(/^.*verification_code.*\b(\d{6})\b.*$/gm)
           ?.at(-1);
         const verificationCode = line?.match(/\d{6}/)?.at(0);
-        if (verificationCode) {
-          const verificationCodeInput = page.getByRole("textbox");
-          console.debug("fill verificationCode");
-          await verificationCodeInput.fill(verificationCode);
-          console.debug("submit verificationCode");
+        if (!verificationCode) {
+          console.debug("認証コードの取得に失敗。");
+          console.debug("次の確認まで待機...");
+          await page.waitForTimeout(3 * 1000);
+          continue;
+        }
+        console.debug("認証コードを取得。");
+        const verificationCodeInput = page.getByRole("textbox");
+        console.debug("認証コードを自動入力...");
+        await verificationCodeInput.fill(verificationCode);
+        console.debug("認証コードを送信...");
+        try {
           await Promise.all([
             verificationCodeInput.waitFor({ state: "hidden" }),
             verificationCodeInput.press("Enter"),
           ]);
-          break;
+        } catch (error) {
+          console.debug("追加認証に失敗。", error);
+          console.debug("次の確認まで待機...");
+          await page.waitForTimeout(3 * 1000);
+          continue;
         }
-        if (retryCount >= 10) {
-          console.error("timeout.");
-          process.exitCode = 1;
-          return;
-        }
-        await page.waitForTimeout(3 * 1000);
+        console.debug("追加認証に成功。");
+        break;
       }
     }
 
-    console.debug("goto /accounts");
+    console.debug("口座ページにアクセス...");
     await page.goto("/accounts");
 
     const useThisAccountButton = page.getByRole("button", {
       name: "このアカウントを使用する",
     });
-    if (await useThisAccountButton.count()) {
-      console.debug("click このアカウントを使用する");
+    console.debug("このアカウントを使用するボタンがあるか確認...");
+    if (await useThisAccountButton.isVisible()) {
+      console.debug("このアカウントを使用するボタンをクリック...");
       await Promise.all([
         page.waitForURL(/\/accounts/),
         useThisAccountButton.click(),
@@ -271,24 +301,25 @@ const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
     const selectThisAccountButton = page.getByRole("button", {
       name: "メールアドレスでログイン",
     });
-    if (await selectThisAccountButton.count()) {
-      console.debug("click メールアドレスでログイン");
+    console.debug("メールアドレスでログインボタンがあるか確認...");
+    if (await selectThisAccountButton.isVisible()) {
+      console.debug("メールアドレスでログインボタンをクリック...");
       await Promise.all([
         page.waitForURL(/\/accounts/),
         selectThisAccountButton.click(),
       ]);
     }
 
-    console.debug("click 口座名");
+    console.debug("口座名をクリック...");
     await Promise.all([
       page.waitForURL(/\/accounts\/show_manual.*/),
       page.getByRole("link", { name: MANUAL_ACCOUNT_NAME }).click(),
     ]);
 
-    console.debug("click 変更");
+    console.debug("変更をクリック...");
     await page.getByAltText("変更").click();
 
-    console.debug("fetch 現在の株価");
+    console.debug("現在の株価を取得...");
     const response = await fetch(
       `https://query2.finance.yahoo.com/v8/finance/chart/${SYMBOL}`,
     );
@@ -298,12 +329,12 @@ const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
     );
 
     if (!Number.isFinite(regularMarketPrice) || regularMarketPrice <= 0) {
-      console.error("regularMarketPrice is invalid.");
+      console.error("🟡現在の株価が無効なため中断。");
       process.exitCode = 1;
       return;
     }
 
-    console.debug("fill 現在の価値");
+    console.debug("現在の価値を自動入力...");
     await page
       .getByText("現在の価値")
       .locator("..")
@@ -312,31 +343,67 @@ const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
         `${Math.round(Number(regularMarketPrice) * Number(numberOfShares))}`,
       );
 
-    console.debug("fill 購入価格");
+    console.debug("購入価格を自動入力...");
     await page
       .getByText("購入価格")
       .locator("..")
       .getByRole("textbox")
       .fill(`${Math.round(Number(bvps) * Number(numberOfShares))}`);
 
-    console.debug("click この内容で登録する");
+    console.debug("この内容で登録するボタンをクリック...");
     await Promise.all([
       page.waitForURL(/\/accounts\/show_manual.*/),
       page.getByRole("button", { name: "この内容で登録する" }).click(),
     ]);
   } catch (error) {
+    console.error("🔴エラーが発生。");
     console.error(error);
     process.exitCode = 1;
 
-    const screenshot = path.join(
-      __dirname,
-      SCREENSHOT_DIR,
-      `${new Date().toLocaleDateString("ja-JP", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Tokyo", timeZoneName: "short" }).replaceAll("/", "-").replaceAll(":", "-")}.png`,
-    );
-    console.error("screenshot", { screenshot });
-    await page.screenshot({ path: screenshot, fullPage: true });
+    const screenshotName = new Date()
+      .toLocaleString("ja-JP", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+        timeZone: "Asia/Tokyo",
+        timeZoneName: "short",
+      })
+      .replaceAll("/", "-")
+      .replaceAll(":", "-")
+      .replaceAll(" ", "_");
+    const filename = `${screenshotName}.png`;
+    const screenshot = path.join(__dirname, SCREENSHOT_DIR, filename);
+    console.debug("デバッグ用にスクリーンショットを撮影...", { screenshot });
+    const buffer = await page.screenshot({ path: screenshot, fullPage: true });
+    const formData = new FormData();
+    formData.append("channels", SLACK_CHANNEL_ID);
+    formData.append("file", new Blob([Uint8Array.from(buffer)]), filename);
+    formData.append("initial_comment", "エラーが発生。");
+    console.debug("Slackに送信...");
+    const response = await fetch("https://slack.com/api/files.upload", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${SLACK_BOT_TOKEN}` },
+      body: formData,
+    });
+    console.debug("Slackに送信。", await response.json());
   } finally {
-    console.debug("close browser");
+    console.debug("ブラウザを終了...");
     await context.close();
+
+    switch (process.exitCode) {
+      case undefined:
+      case 0:
+        console.info("結果: 🟢成功。");
+        break;
+      case 1:
+        console.info("結果: 🔴失敗。");
+        break;
+      default:
+        console.info("結果: 🔴不明なエラーで失敗。");
+    }
   }
 })();
