@@ -175,13 +175,14 @@ const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || "";
         console.debug("認証コードを送信...");
         try {
           await Promise.all([
-            verificationCodeInput.waitFor({ state: "hidden" }),
+            verificationCodeInput.waitFor({
+              state: "hidden",
+              timeout: 3 * 1000,
+            }),
             verificationCodeInput.press("Enter"),
           ]);
         } catch (error) {
           console.debug("追加認証に失敗。", error);
-          console.debug("次の確認まで待機...");
-          await page.waitForTimeout(3 * 1000);
           continue;
         }
         console.debug("追加認証に成功。");
