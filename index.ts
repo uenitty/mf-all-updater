@@ -104,6 +104,7 @@ const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || "";
     const additionalCertificationText = page.getByText("追加認証");
     console.debug("追加認証が必要か確認...");
     if (await additionalCertificationText.count()) {
+      console.debug("追加認証が必要なことを検知。");
       const auth = new google.auth.OAuth2({
         clientId: GMAIL_CLIENT_ID,
         clientSecret: GMAIL_CLIENT_SECRET,
@@ -116,6 +117,8 @@ const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || "";
           process.exitCode = 1;
           return;
         }
+        console.debug("追加認証のメールの受信を待機...");
+        await page.waitForTimeout(3 * 1000);
         console.debug("追加認証のメールを受信しているか確認...", {
           retryCount,
         });
@@ -129,8 +132,6 @@ const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || "";
           console.debug("追加認証のメールは未受信。", {
             "listMessageResponse.status": listMessageResponse.status,
           });
-          console.debug("次の確認まで待機...");
-          await page.waitForTimeout(3 * 1000);
           continue;
         }
         console.debug("追加認証のメール本文を取得...");
@@ -143,14 +144,10 @@ const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || "";
           console.debug("取得時にエラーが発生。", {
             "getMessageResponse.status": getMessageResponse.status,
           });
-          console.debug("次の確認まで待機...");
-          await page.waitForTimeout(3 * 1000);
           continue;
         }
         if (Number(getMessageResponse.data.internalDate) < startTimestamp) {
           console.debug("新しいメールではないことを検知。");
-          console.debug("次の確認まで待機...");
-          await page.waitForTimeout(3 * 1000);
           continue;
         }
         console.debug("メール本文から認証コードを抽出...");
@@ -164,8 +161,6 @@ const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || "";
         const verificationCode = line?.match(/\d{6}/)?.at(0);
         if (!verificationCode) {
           console.debug("認証コードの取得に失敗。");
-          console.debug("次の確認まで待機...");
-          await page.waitForTimeout(3 * 1000);
           continue;
         }
         console.debug("認証コードを取得。");
