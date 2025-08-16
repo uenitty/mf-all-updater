@@ -377,7 +377,7 @@ const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || "";
     const formData = new FormData();
     formData.append("channels", SLACK_CHANNEL_ID);
     formData.append("file", new Blob([Uint8Array.from(buffer)]), filename);
-    formData.append("initial_comment", "エラーが発生。");
+    formData.append("initial_comment", "Manual Account Update: エラーが発生。");
     console.debug("Slackに送信...");
     const response = await fetch("https://slack.com/api/files.upload", {
       method: "POST",
