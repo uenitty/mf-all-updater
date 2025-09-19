@@ -12,10 +12,36 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const gitignorePath = resolve(__dirname, ".gitignore");
 
-export default defineConfig(
-  includeIgnoreFile(gitignorePath),
-  js.configs.recommended,
-  tseslint.configs.recommended,
+const eslintNoUnusedVarsConfigs = [
+  {
+    files: ["**/*.{js,mjs,cjs,ts,tsx}"],
+    rules: {
+      "no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+        },
+      ],
+    },
+  },
+  {
+    files: ["**/*.{ts,tsx}"],
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+        },
+      ],
+    },
+  },
+];
+
+const eslintImportConfigs = [
   {
     settings: {
       "import/resolver": {
@@ -29,28 +55,10 @@ export default defineConfig(
   {
     files: ["**/*.{ts,tsx}"],
     extends: [importPlugin.flatConfigs.typescript],
-    rules: {
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        {
-          argsIgnorePattern: "^_",
-          caughtErrorsIgnorePattern: "^_",
-          destructuredArrayIgnorePattern: "^_",
-        },
-      ],
-    },
   },
   {
     files: ["**/*.{js,mjs,cjs,ts,tsx}"],
     rules: {
-      "no-unused-vars": [
-        "error",
-        {
-          argsIgnorePattern: "^_",
-          caughtErrorsIgnorePattern: "^_",
-          destructuredArrayIgnorePattern: "^_",
-        },
-      ],
       "import/order": [
         "error",
         {
@@ -76,5 +84,13 @@ export default defineConfig(
       ],
     },
   },
+];
+
+export default defineConfig(
+  includeIgnoreFile(gitignorePath),
+  js.configs.recommended,
+  tseslint.configs.recommended,
+  ...eslintNoUnusedVarsConfigs,
+  ...eslintImportConfigs,
   eslintConfigPrettier,
 );
