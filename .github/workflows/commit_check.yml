@@ -39,6 +39,7 @@ jobs:
         with:
           path: node_modules
           key: install-deps-${{ github.sha }}
+      - run: yarn lint
       - run: yarn prettier --check .
   check_type:
     name: Check Type

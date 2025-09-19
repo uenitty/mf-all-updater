@@ -1,10 +1,8 @@
 // ref: https://github.com/kishikawakatsumi/mf-all-updater
+import path from "node:path";
 
 import { config } from "@dotenvx/dotenvx";
 config();
-
-import path from "path";
-
 import { google } from "googleapis";
 import { chromium } from "playwright";
 
@@ -111,7 +109,7 @@ const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || "";
       });
       auth.setCredentials({ refresh_token: GMAIL_REFRESH_TOKEN });
       const gmail = google.gmail({ version: "v1", auth });
-      for (let retryCount = 0; true; retryCount += 1) {
+      for (let retryCount = 0; retryCount <= 10; retryCount += 1) {
         if (retryCount > 9) {
           console.error("🟡確認回数の上限のため中断。");
           process.exitCode = 1;
