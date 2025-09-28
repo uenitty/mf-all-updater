@@ -1336,9 +1336,9 @@ functions-have-names@^1.2.3:
   integrity sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==
 
 gaxios@^7.0.0, gaxios@^7.0.0-rc.4:
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/gaxios/-/gaxios-7.1.1.tgz#255b86ce09891e9ed16926443a1ce239c8f9fd51"
-  integrity sha512-Odju3uBUJyVCkW64nLD4wKLhbh93bh6vIg/ZIXkWiLPBrdgtc65+tls/qml+un3pr6JqYVFDZbbmLDQT68rTOQ==
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/gaxios/-/gaxios-7.1.2.tgz#4954bc5628e3cd108e5252cb597b03a5f16c21ac"
+  integrity sha512-/Szrn8nr+2TsQT1Gp8iIe/BEytJmbyfrbFh419DfGQSkEgNEhbPi7JRJuughjkTzPWgU9gBQf5AVu3DbHt0OXA==
   dependencies:
     extend "^3.0.2"
     https-proxy-agent "^7.0.1"
