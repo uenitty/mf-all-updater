@@ -373,17 +373,60 @@ const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || "";
     const screenshot = path.join(__dirname, SCREENSHOT_DIR, filename);
     console.debug("デバッグ用にスクリーンショットを撮影...", { screenshot });
     const buffer = await page.screenshot({ path: screenshot, fullPage: true });
-    const formData = new FormData();
-    formData.append("channels", SLACK_CHANNEL_ID);
-    formData.append("file", new Blob([Uint8Array.from(buffer)]), filename);
-    formData.append("initial_comment", "Manual Account Update: エラーが発生。");
-    console.debug("Slackに送信...");
-    const response = await fetch("https://slack.com/api/files.upload", {
+
+    console.debug("SlackのアップロードURLを取得...");
+    console.debug(
+      "Using Bot Token:",
+      SLACK_BOT_TOKEN ? `${SLACK_BOT_TOKEN.substring(0, 10)}...` : "NOT SET",
+    );
+    const getUploadUrlResponse = await fetch(
+      "https://slack.com/api/files.getUploadURLExternal",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${SLACK_BOT_TOKEN}`,
+          "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        },
+        body: new URLSearchParams({
+          filename,
+          length: buffer.length.toString(),
+        }),
+      },
+    );
+    const uploadUrlData = await getUploadUrlResponse.json();
+    if (!uploadUrlData.ok) {
+      console.error("アップロードURLの取得に失敗。", { uploadUrlData });
+      throw new Error(`Failed to get upload URL: ${uploadUrlData.error}`);
+    }
+
+    console.debug("Slackにファイルをアップロード...");
+    const uploadResponse = await fetch(uploadUrlData.upload_url, {
       method: "POST",
-      headers: { Authorization: `Bearer ${SLACK_BOT_TOKEN}` },
-      body: formData,
+      body: new Blob([Uint8Array.from(buffer)]),
     });
-    console.debug("Slackに送信。", await response.json());
+    if (!uploadResponse.ok) {
+      console.error("ファイルのアップロードに失敗。", { uploadResponse });
+      throw new Error("Failed to upload file");
+    }
+
+    console.debug("Slackにファイルを送信...");
+    const completeUploadResponse = await fetch(
+      "https://slack.com/api/files.completeUploadExternal",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${SLACK_BOT_TOKEN}`,
+          "Content-Type": "application/json; charset=utf-8",
+        },
+        body: JSON.stringify({
+          files: [{ id: uploadUrlData.file_id, title: filename }],
+          channel_id: SLACK_CHANNEL_ID,
+          initial_comment: "Account Update: エラーが発生。",
+        }),
+      },
+    );
+    const completeUploadData = await completeUploadResponse.json();
+    console.debug("Slackにファイルを送信。", { completeUploadData });
   } finally {
     console.debug("ブラウザを終了...");
     await context.close();
