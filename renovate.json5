@@ -10,5 +10,5 @@
     ":timezone(Asia/Tokyo)",
   ],
   minimumReleaseAge: "3 days",
-  postUpdateOptions: ["yarnDedupeHighest"],
+  postUpdateOptions: ["pnpmDedupe"],
 }

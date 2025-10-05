@@ -7,7 +7,7 @@ PASSWORD=
 ```
 
 ```sh
-$ yarn
+$ pnpm install
 ```
 
 ```sh
