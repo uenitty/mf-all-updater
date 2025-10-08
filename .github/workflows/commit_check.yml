@@ -23,15 +23,17 @@ jobs:
           node-version-file: ".node-version"
           cache: "pnpm"
       - run: pnpm install
-      - run: |
+      - name: Run checks in parallel
+        run: |
           parallel --keep-order '
-            echo "=== Start: {} ==="
-            bash -c {} 2>&1
+            command={}
+            echo "=== ▶️ Start: $command ==="
+            bash -c "time $command" 2>&1
             code=$?
             if [ $code -eq 0 ]; then
-              echo "=== ✅ Success: {} ==="
+              echo "=== ✅ Success: $command ==="
             else
-              echo "=== ❌ Failed: {} ==="
+              echo "=== ❌ Failed: $command ==="
               exit $code
             fi
           ' ::: \
