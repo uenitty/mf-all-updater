@@ -10,7 +10,7 @@
     "update_manual_account": "tsx update_manual_account.ts"
   },
   "devDependencies": {
-    "@eslint/compat": "1.4.1",
+    "@eslint/compat": "2.0.0",
     "@eslint/js": "9.39.1",
     "@types/node": "24.10.1",
     "eslint": "9.39.1",
