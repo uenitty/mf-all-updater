@@ -28,8 +28,8 @@
     "playwright": "1.56.1"
   },
   "engines": {
-    "node": ">=22",
-    "pnpm": ">=10"
+    "node": "24",
+    "pnpm": "10"
   },
   "packageManager": "pnpm@10.23.0"
 }
