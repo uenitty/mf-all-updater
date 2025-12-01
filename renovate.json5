@@ -11,5 +11,11 @@
     ":timezone(Asia/Tokyo)",
   ],
   minimumReleaseAge: "3 days",
+  packageRules: [
+    {
+      matchUpdateTypes: ["lockFileMaintenance"],
+      minimumReleaseAge: null,
+    },
+  ],
   postUpdateOptions: ["pnpmDedupe"],
 }
