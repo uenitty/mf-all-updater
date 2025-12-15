@@ -13,7 +13,12 @@
   minimumReleaseAge: "3 days",
   packageRules: [
     {
-      matchUpdateTypes: ["lockFileMaintenance"],
+      matchUpdateTypes: [
+        "lockFileMaintenance",
+        "pin",
+        "pinDigest",
+        "replacement",
+      ],
       minimumReleaseAge: null,
     },
   ],
