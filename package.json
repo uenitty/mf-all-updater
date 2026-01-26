@@ -23,7 +23,7 @@
     "typescript-eslint": "8.53.1"
   },
   "dependencies": {
-    "@dotenvx/dotenvx": "1.51.4",
+    "@dotenvx/dotenvx": "1.52.0",
     "googleapis": "170.1.0",
     "playwright": "1.57.0"
   },
