@@ -396,7 +396,9 @@ const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || "";
     const uploadUrlData = await getUploadUrlResponse.json();
     if (!uploadUrlData.ok) {
       console.error("アップロードURLの取得に失敗。", { uploadUrlData });
-      throw new Error(`Failed to get upload URL: ${uploadUrlData.error}`);
+      throw new Error(`Failed to get upload URL: ${uploadUrlData.error}`, {
+        cause: error,
+      });
     }
 
     console.debug("Slackにファイルをアップロード...");
@@ -406,7 +408,7 @@ const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || "";
     });
     if (!uploadResponse.ok) {
       console.error("ファイルのアップロードに失敗。", { uploadResponse });
-      throw new Error("Failed to upload file");
+      throw new Error("Failed to upload file", { cause: error });
     }
 
     console.debug("Slackにファイルを送信...");
