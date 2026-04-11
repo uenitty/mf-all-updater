@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@dotenvx/dotenvx':
-        specifier: 1.60.1
-        version: 1.60.1
+        specifier: 1.60.2
+        version: 1.60.2
       googleapis:
         specifier: 171.4.0
         version: 171.4.0
@@ -54,8 +54,8 @@ importers:
 
 packages:
 
-  '@dotenvx/dotenvx@1.60.1':
-    resolution: {integrity: sha512-pPKqhE/HiaPDfbSf6doJnxeqzLszWP4eLICB89wRDZGaBaLzGpa3RgahVYIauBonaEWT8oxqAyacWKHtD+n3hQ==}
+  '@dotenvx/dotenvx@1.60.2':
+    resolution: {integrity: sha512-r4AznHUvfLONuWdoSIQtut6Ez/ym+lGXRtDvRaoAEMEhAmwSoK24jRsfR28vcb3ygWm7qeYOcbZolhtseJl6mA==}
     hasBin: true
 
   '@ecies/ciphers@0.2.6':
@@ -1489,7 +1489,7 @@ packages:
 
 snapshots:
 
-  '@dotenvx/dotenvx@1.60.1':
+  '@dotenvx/dotenvx@1.60.2':
     dependencies:
       commander: 11.1.0
       dotenv: 17.4.0
