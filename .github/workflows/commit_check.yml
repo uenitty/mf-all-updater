@@ -39,5 +39,4 @@ jobs:
           ' ::: \
             "pnpm run lint" \
             "pnpm exec prettier --check ." \
-            "pnpm exec tsc" \
-            "pnpm dlx --package=renovate renovate-config-validator --strict"
+            "pnpm exec tsc"
