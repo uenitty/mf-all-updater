@@ -1,5 +1,67 @@
-[settings]
-idiomatic_version_file_enable_tools = ["node"]
-
 [tools]
+node = "24.15.0"
 pnpm = "11.1.1"
+
+# Script tasks
+
+[tasks.pnpm__install]
+description = "Install dependencies"
+run = "pnpm install"
+
+[tasks.pnpm__update_account]
+description = "Update accounts"
+depends = ["pnpm__install"]
+run = "pnpm run update_account"
+
+[tasks.pnpm__update_manual_account]
+description = "Update manual accounts"
+depends = ["pnpm__install"]
+run = "pnpm run update_manual_account"
+
+[tasks.pnpm__tsc]
+description = "Check types"
+depends = ["pnpm__install"]
+run = "pnpm run tsc"
+
+[tasks.pnpm__lint]
+description = "Check lint issues"
+depends = ["pnpm__install"]
+run = "pnpm run lint"
+
+[tasks.pnpm__lint_fix]
+description = "Fix lint issues"
+depends = ["pnpm__install"]
+run = "pnpm run lint:fix"
+
+[tasks.pnpm__format]
+description = "Check code format"
+depends = ["pnpm__install"]
+run = "pnpm run format"
+
+[tasks.pnpm__format_write]
+description = "Fix code format"
+depends = ["pnpm__install"]
+run = "pnpm run format:write"
+
+# Main tasks
+
+[tasks.playwright_install]
+description = "Install Playwright browsers and OS dependencies"
+depends = ["pnpm__install"]
+run = "pnpm exec playwright install --with-deps chromium --no-shell"
+
+[tasks.update_account]
+description = "Update accounts"
+depends = ["pnpm__update_account"]
+
+[tasks.update_manual_account]
+description = "Update manual accounts"
+depends = ["pnpm__update_manual_account"]
+
+[tasks.check]
+description = "Check code"
+depends = ["pnpm__tsc", "pnpm__lint", "pnpm__format"]
+
+[tasks.fix]
+description = "Fix code"
+depends = ["pnpm__lint_fix", "pnpm__format_write"]
