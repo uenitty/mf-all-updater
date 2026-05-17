@@ -7,8 +7,8 @@ import { chromium } from "playwright";
 
 const HEADLESS = process.env.HEADLESS || "";
 const PLAYWRIGHT_LOGGER = process.env.PLAYWRIGHT_LOGGER || "";
-const USER_DATA_DIR = "./user_data/";
-const SCREENSHOT_DIR = "./screenshot/";
+const USER_DATA_DIR = "../user_data/";
+const SCREENSHOT_DIR = "../screenshot/";
 
 const EMAIL = process.env.EMAIL || "";
 const PASSWORD = process.env.PASSWORD || "";

@@ -7,11 +7,11 @@ PASSWORD=
 ```
 
 ```sh
-$ pnpm install
+$ mise run update_account
 ```
 
 ```sh
 $ crontab -e
 
-30 */6 * * * zsh -l ~/Development/mf-all-updater/command.sh
+30 */6 * * * zsh -l ~/Development/mf-all-updater/script/update_account.sh
 ```

@@ -1,13 +1,20 @@
 {
   "name": "moneyforward",
-  "version": "1.0.0",
-  "main": "index.ts",
-  "license": "MIT",
   "private": true,
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "update_account": "tsx src/update_account.ts",
+    "update_manual_account": "tsx src/update_manual_account.ts",
+    "tsc": "tsc",
     "lint": "eslint",
-    "update_account": "tsx index.ts",
-    "update_manual_account": "tsx update_manual_account.ts"
+    "lint:fix": "eslint --fix",
+    "format": "prettier --check .",
+    "format:write": "prettier --write ."
+  },
+  "dependencies": {
+    "@dotenvx/dotenvx": "1.66.0",
+    "googleapis": "171.4.0",
+    "playwright": "1.60.0"
   },
   "devDependencies": {
     "@eslint/compat": "2.1.0",
@@ -22,14 +29,8 @@
     "typescript": "6.0.3",
     "typescript-eslint": "8.59.3"
   },
-  "dependencies": {
-    "@dotenvx/dotenvx": "1.66.0",
-    "googleapis": "171.4.0",
-    "playwright": "1.60.0"
-  },
   "engines": {
-    "node": "24",
-    "pnpm": "11"
-  },
-  "packageManager": "pnpm@11.1.1"
+    "node": "24.15.0",
+    "pnpm": "11.1.1"
+  }
 }
