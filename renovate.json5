@@ -1,25 +1,18 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: [
-    "config:recommended",
+    "config:best-practices",
     "helpers:pinGitHubActionDigestsToSemver",
     "schedule:nonOfficeHours",
     ":automergeAll",
     ":label(renovate)",
-    ":maintainLockFilesWeekly",
     ":pinAllExceptPeerDependencies",
     ":timezone(Asia/Tokyo)",
   ],
-  minimumReleaseAge: "3 days",
   packageRules: [
     {
-      matchUpdateTypes: [
-        "lockFileMaintenance",
-        "pin",
-        "pinDigest",
-        "replacement",
-      ],
-      minimumReleaseAge: null,
+      matchUpdateTypes: ["major", "minor", "patch"],
+      minimumReleaseAge: "3 days",
     },
   ],
   postUpdateOptions: ["pnpmDedupe"],
