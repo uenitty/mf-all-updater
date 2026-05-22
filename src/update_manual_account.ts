@@ -5,6 +5,9 @@ config();
 import { google } from "googleapis";
 import { chromium } from "playwright";
 
+import { files } from "./lib/slack";
+import { chart } from "./lib/yahoo-finance";
+
 const HEADLESS = process.env.HEADLESS || "";
 const PLAYWRIGHT_LOGGER = process.env.PLAYWRIGHT_LOGGER || "";
 const USER_DATA_DIR = "../user_data/";
@@ -314,15 +317,14 @@ const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || "";
     await page.getByAltText("変更").click();
 
     console.debug("現在の株価を取得...");
-    const response = await fetch(
-      `https://query2.finance.yahoo.com/v8/finance/chart/${SYMBOL}`,
-    );
-    const body = await response.json();
-    const regularMarketPrice = Number(
-      body?.chart?.result?.[0]?.meta?.regularMarketPrice ?? 0,
-    );
+    const chartResource = await chart.get(SYMBOL);
+    const regularMarketPrice = chartResource.meta?.regularMarketPrice;
 
-    if (!Number.isFinite(regularMarketPrice) || regularMarketPrice <= 0) {
+    if (
+      regularMarketPrice === undefined ||
+      !Number.isFinite(regularMarketPrice) ||
+      regularMarketPrice <= 0
+    ) {
       console.error("🟡現在の株価が無効なため中断。");
       process.exitCode = 1;
       return;
@@ -333,16 +335,14 @@ const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || "";
       .getByText("現在の価値")
       .locator("..")
       .getByRole("textbox")
-      .fill(
-        `${Math.round(Number(regularMarketPrice) * Number(numberOfShares))}`,
-      );
+      .fill(`${Math.round(regularMarketPrice * numberOfShares)}`);
 
     console.debug("購入価格を自動入力...");
     await page
       .getByText("購入価格")
       .locator("..")
       .getByRole("textbox")
-      .fill(`${Math.round(Number(bvps) * Number(numberOfShares))}`);
+      .fill(`${Math.round(bvps * numberOfShares)}`);
 
     console.debug("この内容で登録するボタンをクリック...");
     await Promise.all([
@@ -374,61 +374,16 @@ const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || "";
     console.debug("デバッグ用にスクリーンショットを撮影...", { screenshot });
     const buffer = await page.screenshot({ path: screenshot, fullPage: true });
 
-    console.debug("SlackのアップロードURLを取得...");
-    console.debug(
-      "Using Bot Token:",
-      SLACK_BOT_TOKEN ? `${SLACK_BOT_TOKEN.substring(0, 10)}...` : "NOT SET",
-    );
-    const getUploadUrlResponse = await fetch(
-      "https://slack.com/api/files.getUploadURLExternal",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${SLACK_BOT_TOKEN}`,
-          "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
-        },
-        body: new URLSearchParams({
-          filename,
-          length: buffer.length.toString(),
-        }),
-      },
-    );
-    const uploadUrlData = await getUploadUrlResponse.json();
-    if (!uploadUrlData.ok) {
-      console.error("アップロードURLの取得に失敗。", { uploadUrlData });
-      throw new Error(`Failed to get upload URL: ${uploadUrlData.error}`, {
-        cause: error,
-      });
-    }
-
-    console.debug("Slackにファイルをアップロード...");
-    const uploadResponse = await fetch(uploadUrlData.upload_url, {
-      method: "POST",
-      body: new Blob([Uint8Array.from(buffer)]),
-    });
-    if (!uploadResponse.ok) {
-      console.error("ファイルのアップロードに失敗。", { uploadResponse });
-      throw new Error("Failed to upload file", { cause: error });
-    }
-
+    console.debug("Using Bot Token:", SLACK_BOT_TOKEN ? "SET" : "NOT SET");
     console.debug("Slackにファイルを送信...");
-    const completeUploadResponse = await fetch(
-      "https://slack.com/api/files.completeUploadExternal",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${SLACK_BOT_TOKEN}`,
-          "Content-Type": "application/json; charset=utf-8",
-        },
-        body: JSON.stringify({
-          files: [{ id: uploadUrlData.file_id, title: filename }],
-          channel_id: SLACK_CHANNEL_ID,
-          initial_comment: "Account Update: エラーが発生。",
-        }),
-      },
-    );
-    const completeUploadData = await completeUploadResponse.json();
-    console.debug("Slackにファイルを送信。", { completeUploadData });
+    await files.upload({
+      filename,
+      buffer,
+      channelId: SLACK_CHANNEL_ID,
+      initialComment: "Account Update: エラーが発生。",
+      botToken: SLACK_BOT_TOKEN,
+    });
+    console.debug("Slackにファイルを送信。");
   } finally {
     console.debug("ブラウザを終了...");
     await context.close();
