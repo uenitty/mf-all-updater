@@ -1,7 +1,6 @@
 import path from "node:path";
 
-import { config } from "@dotenvx/dotenvx";
-config();
+import "@dotenvx/dotenvx/config";
 import { google } from "googleapis";
 import { chromium, errors } from "playwright";
 
