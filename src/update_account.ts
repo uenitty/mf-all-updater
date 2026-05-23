@@ -4,7 +4,7 @@ import path from "node:path";
 import { config } from "@dotenvx/dotenvx";
 config();
 import { google } from "googleapis";
-import { chromium } from "playwright";
+import { chromium, errors } from "playwright";
 
 import { files } from "./lib/slack";
 
@@ -56,7 +56,19 @@ const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || "";
     const startTimestamp = Date.now();
 
     console.debug("口座ページにアクセス...");
-    await page.goto("/accounts");
+    try {
+      await page.goto("/accounts");
+    } catch (error) {
+      if (!(error instanceof errors.TimeoutError)) {
+        throw error;
+      }
+      console.warn("口座ページへのアクセスがタイムアウト。到達確認...", error);
+      await page
+        .locator("section#registration-table.accounts table#account-table")
+        .first()
+        .waitFor({ state: "attached", timeout: 10 * 1000 });
+      console.debug("到達確認。");
+    }
 
     const maintenanceText = page.getByText("メンテナンス作業中です");
     console.debug("メンテナンス作業中か確認...");
@@ -186,7 +198,19 @@ const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || "";
     }
 
     console.debug("口座ページにアクセス...");
-    await page.goto("/accounts");
+    try {
+      await page.goto("/accounts");
+    } catch (error) {
+      if (!(error instanceof errors.TimeoutError)) {
+        throw error;
+      }
+      console.warn("口座ページへのアクセスがタイムアウト。到達確認...", error);
+      await page
+        .locator("section#registration-table.accounts table#account-table")
+        .first()
+        .waitFor({ state: "attached", timeout: 10 * 1000 });
+      console.debug("到達確認。");
+    }
 
     const useThisAccountButton = page.getByRole("button", {
       name: "このアカウントを使用する",
