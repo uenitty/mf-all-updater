@@ -15,7 +15,7 @@
     "@dotenvx/dotenvx": "1.68.1",
     "googleapis": "172.0.0",
     "playwright": "1.60.0",
-    "valibot": "1.4.0"
+    "valibot": "1.4.1"
   },
   "devDependencies": {
     "@eslint/compat": "2.1.0",
