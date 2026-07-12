@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@dotenvx/dotenvx':
-        specifier: 2.3.1
-        version: 2.3.1
+        specifier: 2.3.3
+        version: 2.3.3
       googleapis:
         specifier: 173.0.0
         version: 173.0.0
@@ -57,12 +57,15 @@ importers:
 
 packages:
 
-  '@dotenvx/dotenvx@2.3.1':
-    resolution: {integrity: sha512-v75W9mBMX+Bb1eIYY/GDuDf8LuhJ/htyjOJSZEqDg65MBW5XoRI1kTJGhcuSg69mcsmRcnM3NNkmCqXOwuXlCQ==}
+  '@dotenvx/dotenvx@2.3.3':
+    resolution: {integrity: sha512-IJ4Jw8QagVIMXEfpg+7EjQAy+64jSFHbWBUUQ+hNBoyMMS/JsA9sHPppmqeIdMf2IuL9EwrafnaautXWDTu/wQ==}
     hasBin: true
 
   '@dotenvx/primitives@1.8.1':
     resolution: {integrity: sha512-xcEkhZDDA9E/ElU27Ft6ZaBBZN4EkXDmD0H4kZB7CcEMfQr43P6RMb7AMU6xYvqLyg2zT8rb0lEuaE8gUlUEiw==}
+
+  '@dotenvx/tooling@0.2.0':
+    resolution: {integrity: sha512-BjhrGaXFDifVNZivDRWuAfJ0GCEm13ywwyMKVgrjylENbHfrFtiVIHHuhPcODQMfNe31OWSI9CAPlYRB4bty+Q==}
 
   '@emnapi/core@1.10.0':
     resolution: {integrity: sha512-yq6OkJ4p82CAfPl0u9mQebQHKPJkY7WrIuk205cTYnYe+k2Z8YBh11FrbRG/H6ihirqcacOgl2BIO8oyMQLeXw==}
@@ -644,10 +647,6 @@ packages:
   color-name@1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
 
-  commander@11.1.0:
-    resolution: {integrity: sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==}
-    engines: {node: '>=16'}
-
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
@@ -718,10 +717,6 @@ packages:
   dot-prop@6.0.1:
     resolution: {integrity: sha512-tE7ztYzXHIeyvc7N+hR3oi7FIbf/NIjVP9hmAt3yMXzrQ072/fpjGLx2GxNxGxUl5V73MEqYzioOMoVhGMJ5cA==}
     engines: {node: '>=10'}
-
-  dotenv@17.4.2:
-    resolution: {integrity: sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw==}
-    engines: {node: '>=12'}
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -1761,12 +1756,11 @@ packages:
 
 snapshots:
 
-  '@dotenvx/dotenvx@2.3.1':
+  '@dotenvx/dotenvx@2.3.3':
     dependencies:
       '@dotenvx/primitives': 1.8.1
-      commander: 11.1.0
+      '@dotenvx/tooling': 0.2.0
       conf: 10.2.0
-      dotenv: 17.4.2
       enquirer: 2.4.1
       env-paths: 2.2.1
       execa: 5.1.1
@@ -1782,6 +1776,8 @@ snapshots:
       yocto-spinner: 1.2.0
 
   '@dotenvx/primitives@1.8.1': {}
+
+  '@dotenvx/tooling@0.2.0': {}
 
   '@emnapi/core@1.10.0':
     dependencies:
@@ -2276,8 +2272,6 @@ snapshots:
 
   color-name@1.1.4: {}
 
-  commander@11.1.0: {}
-
   concat-map@0.0.1: {}
 
   conf@10.2.0:
@@ -2354,8 +2348,6 @@ snapshots:
   dot-prop@6.0.1:
     dependencies:
       is-obj: 2.0.0
-
-  dotenv@17.4.2: {}
 
   dunder-proto@1.0.1:
     dependencies:
