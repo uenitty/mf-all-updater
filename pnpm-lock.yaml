@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@dotenvx/dotenvx':
-        specifier: 2.3.0
-        version: 2.3.0
+        specifier: 2.3.1
+        version: 2.3.1
       googleapis:
         specifier: 173.0.0
         version: 173.0.0
@@ -57,12 +57,12 @@ importers:
 
 packages:
 
-  '@dotenvx/dotenvx@2.3.0':
-    resolution: {integrity: sha512-daU5D1vR6XO7bRFxxXKv+xOYeWHeop/JET0u/HBIy9LvYqHSiNHx2TrqlgPN8MHE82Q8ZSl0FtOtt4sH1Kehqw==}
+  '@dotenvx/dotenvx@2.3.1':
+    resolution: {integrity: sha512-v75W9mBMX+Bb1eIYY/GDuDf8LuhJ/htyjOJSZEqDg65MBW5XoRI1kTJGhcuSg69mcsmRcnM3NNkmCqXOwuXlCQ==}
     hasBin: true
 
-  '@dotenvx/primitives@1.7.1':
-    resolution: {integrity: sha512-HI/WcBC3PD/Onp8uTopXsKdQavJ7jYVF/s8imHBSGTwtV/Z2XPr+FApDZnLZiTHazsIVhzdpNSjT41WMZHOWVw==}
+  '@dotenvx/primitives@1.8.1':
+    resolution: {integrity: sha512-xcEkhZDDA9E/ElU27Ft6ZaBBZN4EkXDmD0H4kZB7CcEMfQr43P6RMb7AMU6xYvqLyg2zT8rb0lEuaE8gUlUEiw==}
 
   '@emnapi/core@1.10.0':
     resolution: {integrity: sha512-yq6OkJ4p82CAfPl0u9mQebQHKPJkY7WrIuk205cTYnYe+k2Z8YBh11FrbRG/H6ihirqcacOgl2BIO8oyMQLeXw==}
@@ -1761,9 +1761,9 @@ packages:
 
 snapshots:
 
-  '@dotenvx/dotenvx@2.3.0':
+  '@dotenvx/dotenvx@2.3.1':
     dependencies:
-      '@dotenvx/primitives': 1.7.1
+      '@dotenvx/primitives': 1.8.1
       commander: 11.1.0
       conf: 10.2.0
       dotenv: 17.4.2
@@ -1781,7 +1781,7 @@ snapshots:
       which: 6.0.1
       yocto-spinner: 1.2.0
 
-  '@dotenvx/primitives@1.7.1': {}
+  '@dotenvx/primitives@1.8.1': {}
 
   '@emnapi/core@1.10.0':
     dependencies:
