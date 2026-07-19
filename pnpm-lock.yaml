@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@dotenvx/dotenvx':
-        specifier: 2.10.0
-        version: 2.10.0
+        specifier: 2.11.1
+        version: 2.11.1
       googleapis:
         specifier: 173.0.0
         version: 173.0.0
@@ -57,8 +57,8 @@ importers:
 
 packages:
 
-  '@dotenvx/dotenvx@2.10.0':
-    resolution: {integrity: sha512-GxY6K7kqVrC7DkMrwvcTXRfDBU/gBFu2UOtAR+6hpBbA59TygzdKAYGJhX4jZCpJMNU/EgvoTjK4D4BtY2vaEg==}
+  '@dotenvx/dotenvx@2.11.1':
+    resolution: {integrity: sha512-9GjzU+kiJnQitTghYkq5tQVBm+R2Oi8GglSZ9Te4OTJMAP7aTLe9zVtPEYCzSsGMM3/VjMoJbp7WhMo3WD5GqA==}
     hasBin: true
 
   '@dotenvx/primitives@1.8.1':
@@ -1582,7 +1582,7 @@ packages:
 
 snapshots:
 
-  '@dotenvx/dotenvx@2.10.0':
+  '@dotenvx/dotenvx@2.11.1':
     dependencies:
       '@dotenvx/primitives': 1.8.1
       '@dotenvx/tooling': 1.0.2
