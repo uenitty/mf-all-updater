@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@dotenvx/dotenvx": "2.23.0",
-    "googleapis": "178.0.0",
+    "googleapis": "178.1.1",
     "playwright": "1.63.0",
     "valibot": "1.4.2"
   },
