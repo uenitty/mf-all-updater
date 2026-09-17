@@ -12,7 +12,7 @@
     "format:write": "prettier --write ."
   },
   "dependencies": {
-    "@dotenvx/dotenvx": "2.24.0",
+    "@dotenvx/dotenvx": "2.24.1",
     "googleapis": "180.0.0",
     "playwright": "1.63.0",
     "valibot": "1.5.0"
