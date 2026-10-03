@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@dotenvx/dotenvx':
-        specifier: 2.32.2
-        version: 2.32.2
+        specifier: 2.32.3
+        version: 2.32.3
       googleapis:
         specifier: 182.0.0
         version: 182.0.0
@@ -63,8 +63,8 @@ packages:
   '@cacheable/utils@2.5.0':
     resolution: {integrity: sha512-buipgOVDkkPXNR5+xBpDw7Zk2n1EvU7qBJCNUcL7rhQ//kfpOXPAvQ511Os0vpLYJ1pZnvudNytkQt2hst3wqA==}
 
-  '@dotenvx/dotenvx@2.32.2':
-    resolution: {integrity: sha512-JwF1VUWhDJyU92S7CGX44Gm/cr9pFYqmo1SqfzhIoChmnQ/1sDV4O+UVmd6extES4FmU5N58NFn7S4k/Jin0wg==}
+  '@dotenvx/dotenvx@2.32.3':
+    resolution: {integrity: sha512-UNFIHshsxON+DVnq+sDpGvhSmHZCQEaQ0C7PTBa1NAA+L94TtRkYGhjttsiIvs6jyYnZJXy5tn9go77+ossGmA==}
     hasBin: true
 
   '@dotenvx/primitives@3.0.3':
@@ -1539,7 +1539,7 @@ snapshots:
       hashery: 1.5.1
       keyv: 5.6.0
 
-  '@dotenvx/dotenvx@2.32.2':
+  '@dotenvx/dotenvx@2.32.3':
     dependencies:
       '@dotenvx/primitives': 3.0.3
       '@dotenvx/tooling': 1.0.3
