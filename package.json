@@ -14,7 +14,7 @@
   "dependencies": {
     "@dotenvx/dotenvx": "2.33.0",
     "googleapis": "183.0.0",
-    "playwright": "1.63.0",
+    "playwright": "1.64.0",
     "valibot": "1.5.0"
   },
   "devDependencies": {
