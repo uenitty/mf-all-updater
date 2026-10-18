@@ -14,6 +14,10 @@
       matchUpdateTypes: ["major", "minor", "patch"],
       minimumReleaseAge: "3 days",
     },
+    {
+      matchDatasources: ["github-runners"],
+      minimumReleaseAgeBehaviour: "timestamp-optional",
+    },
   ],
   postUpdateOptions: ["pnpmDedupe"],
 }
