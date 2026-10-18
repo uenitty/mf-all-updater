@@ -11,12 +11,9 @@
   ],
   packageRules: [
     {
-      matchUpdateTypes: ["major", "minor", "patch"],
+      matchDatasources: ["docker", "github-releases", "github-tags"],
+      matchUpdateTypes: ["major", "minor", "patch", "digest"],
       minimumReleaseAge: "3 days",
-    },
-    {
-      matchDatasources: ["github-runners"],
-      minimumReleaseAgeBehaviour: "timestamp-optional",
     },
   ],
   postUpdateOptions: ["pnpmDedupe"],
