@@ -12,8 +12,8 @@ importers:
         specifier: 2.38.2
         version: 2.38.2
       googleapis:
-        specifier: 188.0.0
-        version: 188.0.0
+        specifier: 189.0.0
+        version: 189.0.0
       playwright:
         specifier: 1.64.1
         version: 1.64.1
@@ -930,8 +930,8 @@ packages:
     resolution: {integrity: sha512-wtv/e7JYgmtpIPcSez2EFD/Wx49DPsRX2rj15D7hTwc7tDsP82dcwoX/I4+zE38mu6S9PcghizzzADLf+ZMunA==}
     engines: {node: '>=22'}
 
-  googleapis@188.0.0:
-    resolution: {integrity: sha512-dLGvMAlYOiemwYnhFoy1bDd+dnB6o8mGxnXhLCirAjAww8F/Qs59XY3EHm7p7RGENtDRTqyM7oV7DQ22V4BaOA==}
+  googleapis@189.0.0:
+    resolution: {integrity: sha512-TmFQmaLNcY/aaGNC9wZW9GvPueWB/fdNmt6eNFLKo5nrAxod4OAnvQNRxZuGO8iKObie5g3iLJloHQ8iiiIlvA==}
     engines: {node: '>=22.0.0'}
 
   gopd@1.2.0:
@@ -2455,7 +2455,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  googleapis@188.0.0:
+  googleapis@189.0.0:
     dependencies:
       google-auth-library: 11.3.2
       googleapis-common: 9.3.1
